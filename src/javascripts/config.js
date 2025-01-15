@@ -1,7 +1,7 @@
 const config = {
-  development: {
-    apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
-  },
+  // development: {
+  //   apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  // },
   production: {
     apiUrl:
       import.meta.env.VITE_API_URL ||
