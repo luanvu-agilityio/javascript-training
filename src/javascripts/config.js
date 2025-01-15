@@ -1,14 +1,21 @@
 const config = {
   development: {
-    apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+    apiUrl: 'http://localhost:3000',
   },
   production: {
-    apiUrl:
-      import.meta.env.VITE_API_URL ||
-      'https://json-server-vercel-kwwfkvsdk-luan-vus-projects-c4babaef.vercel.app/',
+    apiUrl: 'https://json-server-vercel-kwwfkvsdk-luan-vus-projects-c4babaef.vercel.app',
   },
 };
 
 export const getApiUrl = () => {
-  return import.meta.env.PROD ? config.production.apiUrl : config.development.apiUrl;
+  // Check if window exists to determine if we're in a browser environment
+  if (typeof window !== 'undefined') {
+    // Check if we're on localhost
+    const isLocal =
+      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    return isLocal ? config.development.apiUrl : config.production.apiUrl;
+  }
+
+  // Default to production URL if not in browser environment
+  return config.production.apiUrl;
 };
