@@ -7,7 +7,7 @@ const config = {
   },
 };
 export const getApiUrl = () => {
-  return process.env.NODE_ENV === 'production'
+  return import.meta.env.MODE === 'production'
     ? config.production.apiUrl
     : config.development.apiUrl;
 };
