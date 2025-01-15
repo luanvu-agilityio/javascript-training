@@ -1,13 +1,12 @@
 const config = {
   development: {
-    apiUrl: 'http://localhost:3000',
+    apiUrl: import.meta.env.VITE_API_URL,
   },
   production: {
-    apiUrl: 'https://json-server-8zouvu039-luan-vus-projects-c4babaef.vercel.app/',
+    apiUrl: import.meta.env.VITE_API_URL,
   },
 };
+
 export const getApiUrl = () => {
-  return import.meta.env.MODE === 'production'
-    ? config.production.apiUrl
-    : config.development.apiUrl;
+  return config[import.meta.env.MODE].apiUrl;
 };
