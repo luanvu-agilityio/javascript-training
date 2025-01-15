@@ -8,7 +8,9 @@ class DataHandler {
    */
   async getInvoiceList() {
     try {
+      console.log('Requesting URL:', `${this.rootUrl}/invoices`);
       const response = await fetch(`${this.rootUrl}/invoices`);
+      console.log('Response status:', response.status);
       if (!response.ok) throw new Error('Fail to fetch invoices');
       return await response.json();
     } catch (error) {
