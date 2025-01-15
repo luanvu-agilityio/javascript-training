@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Author: Luan Vu, javascript practice: admin dashboard web,
+    Illustrator: design from Figma"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard Web</title>
+    <link rel="icon" type="image/x-icon" href="./assets/images/brand-image.svg" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" />
+    <label for="sidebar-toggle" class="sidebar-toggle-label">
+      <span class="toggle-icon"></span>
+    </label>
+    <div class="wrapper">
+      <div class="sidebar">
+        <div class="sidebar__brand">
+          <img
+            src="./assets/images/brand-image.svg"
+            alt="brand image"
+            class="sidebar__brand-icon"
+          />
+          <h1 class="sidebar__brand-text">Wons</h1>
+        </div>
+        <nav class="sidebar__nav">
+          <ul class="sidebar__menu">
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/dashboard-icon.svg"
+                  alt="dashboard icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Dashboard</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/analytic-icon.svg"
+                  alt="analytics icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Analytics</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/invoice-icon-active.svg"
+                  alt="invoice icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Invoice</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/schedule-icon.svg"
+                  alt="schedule icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Schedule</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/calendar-icon.svg"
+                  alt="calendar icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Calendar</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/message-icon.svg"
+                  alt="message icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Messages</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/notification-icon.svg"
+                  alt="notification icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Notification</span>
+              </a>
+            </li>
+            <li class="sidebar__menu-item">
+              <a href="javascript:void(0)" class="sidebar__menu-link">
+                <img
+                  src="./assets/images/icons/sidebar-icons/setting-icon.svg"
+                  alt="setting icon"
+                  class="sidebar__menu-icon"
+                />
+                <span class="sidebar__menu-text">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar__upgrade">
+          <img
+            src="./assets/images/sidebar-upgrade-image.png"
+            alt="upgrade icon"
+            class="sidebar__upgrade-image"
+          />
+        </div>
+        <div class="user-profile profile">
+          <img
+            src="./assets/images/user-image.png"
+            alt="user profile avatar"
+            class="profile__avatar"
+          />
+          <div class="profile__info">
+            <p class="profile__name">Easin Arafat</p>
+            <p class="profile__status">Free Account</p>
+          </div>
+          <img
+            src="./assets/images/icons/sidebar-icons/logout-icon.svg"
+            alt="log out icon"
+            class="profile__logout"
+          />
+        </div>
+      </div>
+
+      <main class="main">
+        <div class="main__header">
+          <h2 class="main__title">Invoice list</h2>
+          <div class="main__actions">
+            <div class="main__search search">
+              <input type="text" placeholder="Search" class="search__input" />
+              <img
+                src="./assets/images/icons/main-view-icons/search-icon.svg"
+                alt="search icon"
+                class="search__icon"
+              />
+            </div>
+            <button class="btn btn--primary">&#43; Add New</button>
+          </div>
+        </div>
+
+        <div class="mobile-sort">
+          <div class="sort-dropdown">
+            <button class="sort-dropdown__button">
+              Sort by: <span class="sort-dropdown__selected">By name</span>
+              <img
+                class="sort-icon--mobile"
+                src="./assets/images/icons/main-view-icons/sort-icon-down.png"
+                alt="sort icon"
+              />
+            </button>
+            <div class="sort-dropdown__menu">
+              <button class="sort-dropdown__option" data-sort="name">By name</button>
+              <button class="sort-dropdown__option" data-sort="id">By ID</button>
+              <button class="sort-dropdown__option" data-sort="date">By date</button>
+              <button class="sort-dropdown__option" data-sort="email">By email</button>
+              <button class="sort-dropdown__option" data-sort="status">By status</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="main__table table">
+          <table class="table__content">
+            <thead class="table__head">
+              <tr class="table__row">
+                <th class="table__header"><input type="checkbox" class="checkbox" /></th>
+                <th class="table__header" data-field="id">ID <span class="sort-icon"></span></th>
+                <th class="table__header" data-field="name">
+                  Name <span class="sort-icon"></span>
+                </th>
+                <th class="table__header" data-field="email">
+                  Email <span class="sort-icon"></span>
+                </th>
+                <th class="table__header" data-field="date">
+                  Date <span class="sort-icon"></span>
+                </th>
+                <th class="table__header" data-field="status">
+                  Status <span class="sort-icon"></span>
+                </th>
+                <th></th>
+                <th class="table__header">
+                  <img
+                    class="table__delete-icon"
+                    src="./assets/images/icons/main-view-icons/delete-icon.svg"
+                    alt="Deletion icon"
+                  />
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="table__body"></tbody>
+          </table>
+        </div>
+      </main>
+
+      <div class="content hidden">
+        <div class="form-container"></div>
+
+        <div class="preview">
+          <div class="preview__header">
+            <h2 class="preview__header-title">Preview</h2>
+            <div class="preview__main__actions">
+              <a href="javascript:void(0)">
+                <img
+                  src="./assets/images/icons/preview-section-icons/download-icon.svg"
+                  alt="download icon"
+                />
+              </a>
+              <a href="javascript:void(0)">
+                <img
+                  src="./assets/images/icons/preview-section-icons/print-icon.svg"
+                  alt="printer icon"
+                />
+              </a>
+            </div>
+          </div>
+
+          <div class="preview__content">
+            <div class="preview__customer">
+              <div class="preview__customer-logo">
+                <img src="./assets/images/recipient-logo.svg" alt="recipient-logo" />
+              </div>
+              <div class="preview__customer-info">
+                <div class="preview__customer-email">
+                  &#64; <span class="email-address">your.mail@gmail.com</span>
+                </div>
+                <div class="preview__customer-phone">
+                  m <span class="phone-number">+388 953 217 3815</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview__invoice">
+              <div class="preview__invoice-details">
+                <div class="recipient-details">
+                  <span class="recipient__info">recipient</span><br />
+                  <div class="contact-details">
+                    <p class="recipient__name"></p>
+                    <p class="recipient__address"></p>
+                  </div>
+                  <div class="preview-company__info">
+                    <div class="preview-company__email">
+                      &#64; <span class="email-address"> </span>
+                    </div>
+                    <div class="preview-company__phone">
+                      m <span class="phone-number"> &#43;386 714 505 8385</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="preview__invoice-header">
+                  <div class="preview__invoice-title">Invoice</div>
+                  <div class="invoice-number">
+                    <div class="preview__invoice-label--id"></div>
+                    <div class="preview__invoice-label--date"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <table class="preview-table">
+            <thead>
+              <tr class="preview-table__row">
+                <th class="product-list__header">Product Description</th>
+                <th class="product-list__header">Rates</th>
+                <th class="product-list__header">Qty</th>
+                <th class="product-list__header">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="preview-table__row"></tr>
+            </tbody>
+          </table>
+
+          <div class="preview-summary">
+            <div class="preview-summary__row">
+              <span class="preview-summary__label">Subtotal:</span>
+              <span class="preview-summary__value">&#36;</span>
+            </div>
+            <div class="preview-summary__row">
+              <span class="preview-summary__label">Discount (5&#37;):</span>
+              <span class="preview-summary__value">&#36;</span>
+            </div>
+            <div class="preview-summary__row preview-summary__total">
+              <span class="preview-summary__label">Total:</span>
+              <span class="preview-summary__value">&#36;</span>
+            </div>
+          </div>
+
+          <div class="preview-footer">
+            <div class="preview-footer__payment">
+              <p>to the business account below. Please include invoice number on your check.</p>
+              <p class="payment__bank-acc">
+                BANK:
+                <span class="bank-acc__info"> FTSBUS33</span>
+                IBAN: <span class="bank-acc__info"> GB82-1111-2222-3333</span>
+              </p>
+            </div>
+
+            <div class="preview-footer__notes">
+              <h3 class="notes__header">NOTES</h3>
+              <p class="notes__content">
+                All amounts are in dollars. Please make the payment within 15 days from the issue of
+                date of this invoice. Tax is not charged on the basis of paragraph 1 of Article 94
+                of the Value Added Tax Act (I am not liable for VAT).
+              </p>
+              <p>Thank you for your confidence in my work.<br />Signature</p>
+            </div>
+
+            <div class="preview-footer__company">
+              <div class="preview-footer__company-details">
+                <p>YOUR COMPANY</p>
+                <p>1331 Hart Ridge Road, 49436 Gaines, MI</p>
+              </div>
+              <div class="preview__customer-info">
+                <div class="preview__customer-email">
+                  &#64; <span class="email-address">your.mail@gmail.com</span>
+                </div>
+                <div class="preview__customer-phone">
+                  m <span class="phone-number">+388 953 217 3815</span>
+                </div>
+              </div>
+
+              <div class="preview-footer__company-copyright">
+                <p>The company is registered in the<br />business register under no. 87600000</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./javascripts/main.js"></script>
+  </body>
+</html>
