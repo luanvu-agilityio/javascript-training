@@ -5,3 +5,8 @@ node_modules/
 node_modules
 public/
 exercise/
+.env.development
+.env.production
+.env.local
+config.js
+.vercel

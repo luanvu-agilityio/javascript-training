@@ -32,6 +32,7 @@ class InvoiceController {
     this.view = new InvoiceView();
     this.validator = new ValidationUtils();
     this.notification = new NotificationUtils();
+
     this.dataHandler = new DataHandler();
   }
 

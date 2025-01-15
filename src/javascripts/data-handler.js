@@ -1,6 +1,7 @@
+import { getApiUrl } from './config.js';
 class DataHandler {
   constructor() {
-    this.rootUrl = 'http://localhost:3000';
+    this.rootUrl = getApiUrl();
   }
   /**
    * Invoice methods
