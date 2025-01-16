@@ -70,6 +70,10 @@ class InvoiceView {
   renderInvoiceList(invoices) {
     this.invoiceList.innerHTML = invoices
       .map((invoice) => {
+        if (!invoice.id) {
+          console.error('Invoice missing ID:', invoice);
+          return '';
+        }
         const favoriteClass = invoice.favorite ? 'favorite-icon-active' : 'favorite-icon-inactive';
         const favoriteIconSrc = invoice.favorite
           ? './assets/images/icons/main-view-icons/favorite-icon-active.svg'

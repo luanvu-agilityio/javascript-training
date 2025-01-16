@@ -32,8 +32,6 @@ class DataHandler {
 
   async createInvoice(invoice) {
     try {
-      console.log('Creating invoice with payload:', JSON.stringify(invoice, null, 2));
-
       const response = await fetch(`${this.rootUrl}/invoices`, {
         method: 'POST',
         headers: {
@@ -43,9 +41,6 @@ class DataHandler {
         },
         body: JSON.stringify(invoice),
       });
-
-      console.log('Response status:', response.status);
-      console.log('Response headers:', [...response.headers.entries()]);
 
       if (!response.ok) {
         const errorText = await response.text();

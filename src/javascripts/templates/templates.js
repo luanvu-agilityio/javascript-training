@@ -268,7 +268,7 @@ const Templates = {
   <td class="table__cell table__cell--actions" data-label="Actions">
     <div class="popup-menu">
       <button class="btn-trigger">...</button>
-      <div class="popup-content active">
+      <div class="popup-content hidden ">
         <button class="btn btn--edit" data-id="{{id}}">
           <img src="./assets/images/icons/main-view-icons/edit-icon.svg" alt="edit icon" />
           Edit

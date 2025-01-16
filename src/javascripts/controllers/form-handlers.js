@@ -68,6 +68,13 @@ export function closeForm() {
 export function showCreateForm() {
   toggleForm({ showCreate: true });
   resetForm();
+
+  const statusSelect = document.querySelector('.form--create #status');
+  if (statusSelect) {
+    statusSelect.value = 'Pending';
+    const event = new Event('change', { bubble: true });
+    statusSelect.dispatchEvent(event);
+  }
 }
 
 /**
@@ -89,8 +96,12 @@ export function resetFormStates() {
  * @param {Function} onResetForm - Callback function to handle additional reset actions.
  */
 export function resetForm(onResetForm) {
-  const inputs = document.querySelectorAll('.form__group-input');
-  inputs.forEach((input) => (input.value = ''));
+  const inputs = document.querySelectorAll('.form__group-input:not(#status');
+  inputs.forEach((input) => input.value === '');
+  const statusSelect = document.querySelector('.form-create #status');
+  if (statusSelect) {
+    statusSelect.value = 'Pending';
+  }
 
   const activeForm = document.querySelector('.form--create:not(.hidden), .form--edit:not(.hidden)');
   if (activeForm) {

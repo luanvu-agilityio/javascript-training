@@ -55,6 +55,7 @@ class InvoiceController {
     this.setupFormListeners();
     this.setupProductListeners();
     this.setupDeletionListeners();
+    this.view.setupFavoriteHandler();
   }
 
   setupInvoiceListListeners() {
@@ -76,6 +77,13 @@ class InvoiceController {
     document.querySelector('.btn--primary').addEventListener('click', () => {
       formHandlers.showCreateForm();
       updateInvoiceIdPlaceholder();
+
+      const statusSelect = document.querySelector('.form--create #status');
+      if (statusSelect) {
+        statusSelect.value = 'Pending';
+      }
+      const event = new Event('change', { bubble: true });
+      statusSelect.dispatchEvent(event);
     });
 
     // Sets up the event listener for the "Add Invoice" button.
@@ -426,15 +434,17 @@ class InvoiceController {
           });
           return;
         }
+        const idsToDelete = identifier.map((checkbox) => {
+          const row = checkbox.closest('.table__row');
+          return row.querySelector('[data-label="Invoice Id"]').textContent;
+        });
 
-        const confirmed = await this.confirmDeletion(identifier.length);
+        const confirmed = await this.confirmDeletion(
+          identifier.length,
+          identifier.length === 1 ? idsToDelete[0] : null,
+        );
+
         if (confirmed) {
-          // Get array of invoice IDs to delete
-          const idsToDelete = identifier.map((checkbox) => {
-            const row = checkbox.closest('.table__row');
-            return row.querySelector('.btn--delete').dataset.id;
-          });
-
           // Delete all products for these invoices first
           for (const invoiceId of idsToDelete) {
             const products = await this.dataHandler.getProductsByInvoiceId(invoiceId);
@@ -454,9 +464,11 @@ class InvoiceController {
       } else {
         // Single deletion
         const deleteBtn = identifier.target.closest('.btn--delete');
-        if (!deleteBtn) return;
 
-        const invoiceId = deleteBtn.dataset.id;
+        if (!deleteBtn) return;
+        const row = deleteBtn.closest('.table__row');
+        const idCell = row.querySelector('[data-label="Invoice Id"]');
+        const invoiceId = idCell.textContent;
 
         const confirmed = await this.confirmDeletion(1, invoiceId);
         if (confirmed) {
@@ -488,7 +500,7 @@ class InvoiceController {
    * @param {string} [id = null] - The ID of the single invoice to delete (optional).
    * @returns {boolean} True if the user confirms the deletion, false otherwise.
    */
-  async confirmDeletion(count, id = null) {
+  async confirmDeletion(count, id) {
     const message =
       count > 1
         ? `Are you sure you want to delete ${count} selected invoice(s)?`

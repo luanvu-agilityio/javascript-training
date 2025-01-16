@@ -6,7 +6,8 @@
       "email": "easinarafat@gmail.com",
       "date": "2025-01-07",
       "address": "123 Bellinham",
-      "status": "Cancel"
+      "status": "Cancel",
+      "favorite": false
     },
     {
       "id": "INV-25-01-8192",
@@ -23,16 +24,7 @@
       "email": "aaa@gmail.com",
       "date": "2024-12-31",
       "address": "1111 sassssssss",
-      "status": "Cancel",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-1873",
-      "name": "tttttt",
-      "email": "cccc@gmail.com",
-      "date": "2025-01-07",
-      "address": "12222",
-      "status": "Cancel",
+      "status": "Complete",
       "favorite": false
     }
   ],
@@ -46,7 +38,7 @@
       "invoiceId": "INV-25-01-8192"
     },
     {
-      "id": "faa0",
+      "id": "1e50",
       "name": "tv",
       "rate": 500,
       "quantity": 2,
@@ -54,7 +46,7 @@
       "invoiceId": "INV-25-01-6999"
     },
     {
-      "id": "434d",
+      "id": "d39e",
       "name": "bag",
       "rate": 22,
       "quantity": 22,
@@ -62,20 +54,12 @@
       "invoiceId": "INV-25-01-6999"
     },
     {
-      "id": "4464",
+      "id": "4b57",
       "name": "ccc",
       "rate": 22,
       "quantity": 22,
       "amount": 484,
       "invoiceId": "INV-25-01-3030"
-    },
-    {
-      "id": "7bef",
-      "name": "â",
-      "rate": 11,
-      "quantity": 111,
-      "amount": 1221,
-      "invoiceId": "INV-25-01-1873"
     }
   ]
 }
