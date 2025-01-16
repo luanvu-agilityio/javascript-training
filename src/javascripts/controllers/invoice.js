@@ -4,9 +4,11 @@ import InvoiceView from '../views/view.js';
 import ValidationUtils from '../helpers/validation-utils.js';
 import NotificationUtils from '../helpers/notification-utils.js';
 import DataHandler from '../data-handler.js';
+import LoadingUtils from '../helpers/loading-utils.js';
 import * as formHandlers from './form-handlers.js';
 import * as productHandlers from './product-handlers.js';
 import { sortHandlers } from './sort-handler.js';
+
 import { generateInvoiceId, updateInvoiceIdPlaceholder } from '../helpers/invoice-id-utils.js';
 
 /**
@@ -24,6 +26,7 @@ class InvoiceController {
   constructor() {
     this.initializeServices();
     this.initializeState();
+    this.loading = new LoadingUtils();
     this.init();
   }
 
@@ -361,23 +364,39 @@ class InvoiceController {
     return updatedInvoice;
   }
 
-  handleSuccessfulCreation(invoice) {
-    this.invoices.push(invoice);
-    this.view.renderInvoiceList(this.invoices);
-    this.view.renderInvoicePreview(invoice);
-    formHandlers.resetFormStates();
-    formHandlers.resetForm();
-    this.notification.show('Invoice created successfully', { type: 'success' });
+  async handleSuccessfulCreation(invoice) {
+    this.loading.show();
+    try {
+      this.invoices.push(invoice);
+      this.view.renderInvoiceList(this.invoices);
+      this.view.renderInvoicePreview(invoice);
+      formHandlers.resetFormStates();
+      formHandlers.resetForm();
+      this.view.clearInvoicePreview();
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } finally {
+      this.loading.hide();
+      this.notification.show('Invoice created successfully', { type: 'success' });
+    }
   }
 
-  handleSuccessfulUpdate(formData, products) {
-    const index = this.invoices.findIndex((inv) => inv.id === formData.id);
-    if (index !== -1) {
-      this.invoices[index] = { ...formData, products };
-      this.view.renderInvoiceList(this.invoices);
-      this.view.renderInvoicePreview(this.invoices[index]);
+  async handleSuccessfulUpdate(formData, products) {
+    this.loading.show();
+
+    try {
+      const index = this.invoices.findIndex((inv) => inv.id === formData.id);
+      if (index !== -1) {
+        this.invoices[index] = { ...formData, products };
+        this.view.renderInvoiceList(this.invoices);
+        this.view.renderInvoicePreview(this.invoices[index]);
+        this.notification.show('Invoice updated successfully', { type: 'success' });
+        formHandlers.resetFormStates();
+      }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } finally {
+      this.loading.hide();
       this.notification.show('Invoice updated successfully', { type: 'success' });
-      formHandlers.resetFormStates();
     }
   }
 

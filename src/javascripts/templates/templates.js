@@ -299,6 +299,12 @@ const Templates = {
   </td>
 </tr>
 `,
+  loadingOverlay: `
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Processing...</div>
+  </div>
+`,
   addProductPriceCalculation: (product) => `
 <tr class="product-list__table-row">
   <td class="product-list__cell"><input type="text" class="product-input" value="${product.name}"></td>

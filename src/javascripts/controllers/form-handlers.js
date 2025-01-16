@@ -98,7 +98,7 @@ export function resetFormStates() {
  */
 export function resetForm(onResetForm) {
   const inputs = document.querySelectorAll('.form__group-input:not(#status');
-  inputs.forEach((input) => input.value === '');
+  inputs.forEach((input) => (input.value = ''));
   const statusSelect = document.querySelector('.form-create #status');
   if (statusSelect) {
     statusSelect.value = 'Pending';
@@ -191,7 +191,7 @@ export function validateFormData(data) {
   const validation = validator.validateInvoiceForm(data);
 
   if (!validation.isValid) {
-    const errorMessages = Object.values(validation.errors).join('\n');
+    const errorMessages = validator.formatValidationErrors({ form: validation.errors });
     new NotificationUtils().alert(errorMessages, { type: 'warning' });
     return false;
   }

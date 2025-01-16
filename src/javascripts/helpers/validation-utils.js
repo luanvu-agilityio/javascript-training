@@ -188,7 +188,7 @@ class ValidationUtils {
       }
     }
 
-    return messages.join('\n');
+    return messages.join('\n').replace(/\n/g, '<br>');
   }
 }
 
