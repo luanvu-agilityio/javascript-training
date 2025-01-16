@@ -79,7 +79,7 @@ const Templates = {
     </div>
 
     <div class="form__action-buttons">
-      <button class="btn form__action-buttons--button-send">Send Invoice</button>
+      <button class="btn form__action-buttons--button-send disabled">Send Invoice</button>
       <button class="btn form__action-buttons--button-${type === 'create' ? 'create' : 'save'}">${type === 'create' ? 'Create Invoice' : 'Save Changes'}</button>
     </div>
   </div>
@@ -268,6 +268,7 @@ const Templates = {
   <td class="table__cell table__cell--actions" data-label="Actions">
     <div class="popup-menu">
       <button class="btn-trigger">...</button>
+      <div class="popup-backdrop "></div>
       <div class="popup-content hidden ">
         <button class="btn btn--edit" data-id="{{id}}">
           <img src="./assets/images/icons/main-view-icons/edit-icon.svg" alt="edit icon" />

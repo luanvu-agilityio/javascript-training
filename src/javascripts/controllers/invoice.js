@@ -58,6 +58,7 @@ class InvoiceController {
     this.setupFormListeners();
     this.setupProductListeners();
     this.setupDeletionListeners();
+    this.setupSidebarInvoiceLink();
     this.view.setupFavoriteHandler();
   }
 
@@ -172,6 +173,23 @@ class InvoiceController {
         invoice[field].toLowerCase().includes(searchTerm),
       ),
     );
+  }
+
+  setupSidebarInvoiceLink() {
+    const invoiceLink = document.querySelector(
+      '.sidebar__menu-item:nth-child(3) .sidebar__menu-link',
+    );
+    if (invoiceLink) {
+      invoiceLink.addEventListener('click', () => {
+        // Close any active forms
+        formHandlers.resetFormStates();
+        formHandlers.resetForm();
+        this.view.clearInvoicePreview();
+        // Show main view
+        document.querySelector('.main').classList.remove('hidden');
+        document.querySelector('.content').style.display = 'none';
+      });
+    }
   }
 
   /**

@@ -81,6 +81,33 @@
   color: var(--red-pink-color);
 }
 
+/* Add disabled state styles for sidebar menu items */
+.sidebar__menu-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sidebar__menu-item.disabled .sidebar__menu-link {
+  pointer-events: none;
+}
+
+.sidebar__menu-item.disabled:hover .sidebar__menu-icon {
+  background-color: transparent;
+}
+
+.sidebar__menu-item.disabled:hover .sidebar__menu-text {
+  color: rgba(6, 21, 43, 0.5);
+}
+
+/* Update active state styles */
+.sidebar__menu-item.active .sidebar__menu-icon {
+  background-color: rgba(58, 54, 219, 0.1);
+}
+
+.sidebar__menu-item.active .sidebar__menu-text {
+  color: var(--deep-blue-color);
+}
+
 .user-profile {
   position: absolute;
   display: flex;
@@ -128,6 +155,10 @@
   line-height: 2.083rem;
 }
 
+.btn:last-child {
+  margin-bottom: 0;
+}
+
 .btn--primary {
   color: var(--white-color);
   background-color: var(--deep-blue-color);
@@ -143,14 +174,23 @@
   cursor: pointer;
   font-size: 26px;
   opacity: 0.3;
+  padding: 8px 12px;
   border-radius: 4px;
-  margin-bottom: 1.5rem;
+  transition: opacity 0.2s;
 }
 
 .btn-trigger:hover {
   opacity: 1;
 }
 
+/* Disabled button styles */
+.form__action-buttons--button-send.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* product list */
 .product-list__action-button--button-add {
   padding: 0.5rem 0.9rem;
   background-color: var(--deep-blue-color);
@@ -218,30 +258,45 @@
   display: inline-block;
 }
 
-.popup-content {
-  position: absolute;
-  right: 0;
-  top: 100%;
-
-  padding: 1rem;
-  margin-top: var(--space-4);
-  background: var(--white-color);
-  border-radius: var(--space-8);
-  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-
-  min-width: 11rem;
-  z-index: 1000;
+.popup-backdrop {
   display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 998;
 }
 
-.popup-content.active {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  animation: popupFade 0.2s ease-out;
+/* Popup Content */
+.popup-content {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  z-index: 999;
+}
+
+.popup-content.active,
+.popup-backdrop.active {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .popup-menu:focus-within .popup-content,
@@ -250,19 +305,19 @@
 }
 
 .btn--edit {
+  gap: 1.2rem;
   width: 100%;
-  border-radius: 0.5rem;
-  background-color: rgba(58, 54, 219, 0.05);
-
-  font-size: var(--font-size-14);
-  font-weight: 400;
-  line-height: 14.63px;
-  color: var(--deep-blue-color);
-  margin-bottom: 1rem;
+  padding: 1.2rem 1.6rem;
+  border: none;
+  text-align: left;
+  color: rgb(58, 54, 219);
+  background-color: rgba(58, 54, 219, 0.15);
+  transition: all 0.2s;
+  margin-bottom: 0.8rem;
 }
 
 .btn--edit:hover {
-  background-color: var(--primary-bg-color);
+  background-color: rgba(58, 54, 219, 0.1);
 }
 
 .btn--edit img,
@@ -272,19 +327,26 @@
 }
 
 .btn--delete {
+  gap: 1.2rem;
   width: 100%;
-  border-radius: 0.5rem;
-  background-color: rgba(255, 105, 180, 0.05);
-
-  font-size: var(--font-size-14);
-  font-weight: 400;
-  line-height: 14.63px;
-  color: var(--red-pink-color);
+  padding: 1.2rem 1.6rem;
+  border: none;
+  text-align: left;
+  transition: all 0.2s;
+  margin-bottom: 0.8rem;
+  color: rgb(255, 71, 87);
+  background-color: rgba(255, 71, 87, 0.15);
 }
 
 .btn--delete:hover {
-  background-color: var(--primary-bg-color);
+  background-color: rgba(255, 71, 87, 0.1);
 }
+
+.btn img {
+  width: 20px;
+  height: 20px;
+}
+
 /* Status */
 
 .status {

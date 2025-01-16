@@ -25,33 +25,85 @@ class InvoiceView {
   }
 
   /**
-   * Setup event listener to hide popup when user uses specific actions
+   * Closes any active popup and its backdrop
+   */
+  closeActivePopup() {
+    if (this.activePopup) {
+      this.activePopup.classList.remove('active');
+      this.activePopup = null;
+    }
+    if (this.activeBackdrop) {
+      this.activeBackdrop.classList.remove('active');
+      this.activeBackdrop = null;
+    }
+  }
+
+  /**
+   * Opens a popup and its backdrop
+   * @param {HTMLElement} popup - The popup element to open
+   * @param {HTMLElement} backdrop - The backdrop element associated with the popup
+   */
+  openPopup(popup, backdrop) {
+    // First close any existing popup
+    this.closeActivePopup();
+
+    // Then open the new one
+    popup.classList.add('active');
+    backdrop.classList.add('active');
+
+    // Store references to active elements
+    this.activePopup = popup;
+    this.activeBackdrop = backdrop;
+  }
+
+  /**
+   * Setup event listeners for popup menu interactions
    */
   setupPopupMenu() {
+    // Handle clicks outside popup
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.popup-menu')) {
-        const activePopups = document.querySelectorAll('.popup-content.active');
-        activePopups.forEach((popup) => popup.classList.remove('active'));
+      const clickedPopupMenu = e.target.closest('.popup-menu');
+      const clickedTrigger = e.target.closest('.btn-trigger');
+
+      if (!clickedPopupMenu) {
+        this.closeActivePopup();
+        return;
       }
 
-      if (e.target.closest('.btn-trigger')) {
+      if (clickedTrigger) {
         e.preventDefault();
         e.stopPropagation();
-        const popup = e.target.closest('.table__row').querySelector('.popup-content');
-        popup?.classList.toggle('active');
+
+        const row = clickedTrigger.closest('.table__row');
+        const popup = row.querySelector('.popup-content');
+        const backdrop = row.querySelector('.popup-backdrop');
+
+        // If clicking the trigger of an active popup, close it
+        if (popup === this.activePopup) {
+          this.closeActivePopup();
+        } else {
+          // Otherwise, open the new popup
+          this.openPopup(popup, backdrop);
+        }
       }
     });
 
+    // Handle escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();
-        const activePopups = document.querySelectorAll('.popup-content.active');
-        activePopups.forEach((popup) => popup.classList.remove('active'));
+        this.closeActivePopup();
+      }
+    });
+
+    // Handle backdrop clicks
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('popup-backdrop')) {
+        this.closeActivePopup();
       }
     });
   }
-
   /**
    * Renders the create and edit forms using templates.
    */
