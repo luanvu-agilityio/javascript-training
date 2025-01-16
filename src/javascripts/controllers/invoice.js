@@ -215,8 +215,6 @@ class InvoiceController {
     const products = this.collectAndValidateProducts();
     if (!products) return;
 
-    if (!(await this.validateInvoiceId(formData.id))) return;
-
     try {
       await this.createInvoiceWithProducts(formData, products);
       this.handleSuccessfulCreation(formData);
