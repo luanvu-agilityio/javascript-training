@@ -3,7 +3,7 @@ const config = {
     apiUrl: 'http://localhost:3000',
   },
   production: {
-    apiUrl: 'https://json-server-ecafvf72a-luan-vus-projects-c4babaef.vercel.app',
+    apiUrl: 'https://json-server-b1faln7gb-luan-vus-projects-c4babaef.vercel.app',
   },
 };
 
