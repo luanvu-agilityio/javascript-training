@@ -32,17 +32,30 @@ class DataHandler {
 
   async createInvoice(invoice) {
     try {
+      console.log('Creating invoice with payload:', JSON.stringify(invoice, null, 2));
+
       const response = await fetch(`${this.rootUrl}/invoices`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+
+          Accept: 'application/json',
         },
         body: JSON.stringify(invoice),
       });
-      if (!response.ok) throw new Error('Fail to create invoice');
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', [...response.headers.entries()]);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server error response:', errorText);
+        throw new Error(`Failed to create invoice: ${response.status} ${errorText}`);
+      }
+
       return await response.json();
     } catch (error) {
-      console.error('Error creating invoice', error);
+      console.error('Error creating invoice:', error);
       throw error;
     }
   }
