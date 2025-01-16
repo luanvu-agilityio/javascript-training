@@ -366,6 +366,7 @@ class InvoiceController {
     this.view.renderInvoiceList(this.invoices);
     this.view.renderInvoicePreview(invoice);
     formHandlers.resetFormStates();
+    formHandlers.resetForm();
     this.notification.show('Invoice created successfully', { type: 'success' });
   }
 

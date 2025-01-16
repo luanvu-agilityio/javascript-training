@@ -1,4 +1,5 @@
 import NotificationUtils from '../helpers/notification-utils.js';
+import ValidationUtils from '../helpers/validation-utils.js';
 import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
 /**
  * Setup event listener for any form related actions
@@ -123,18 +124,33 @@ export function collectFormData() {
   if (!activeForm) return null;
   const isEditForm = activeForm.classList.contains('form--edit');
 
-  const idInput = activeForm.querySelector('.form__group-input, input[name="invoice-id"]');
+  // Get all form inputs
+  const inputs = {
+    id: activeForm.querySelector('.form__group-input, input[name="invoice-id"]'),
+    name: activeForm.querySelector('input[placeholder="Alison G."]'),
+    email: activeForm.querySelector('input[type="email"]'),
+    date: activeForm.querySelector('input[type="date"]'),
+    address: activeForm.querySelector('input[placeholder="Street"]'),
+    status: activeForm.querySelector('#status'),
+  };
+
+  //Validate all required input
+  if (!inputs.name || !inputs.email || !inputs.date || !inputs.address || !inputs.status) {
+    new NotificationUtils().alert('Form is missing required fields', { type: 'error' });
+    return null;
+  }
+
   const idValue = isEditForm
-    ? idInput.value
-    : idInput.value || idInput.placeholder || generateInvoiceId();
+    ? inputs.id?.value
+    : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId();
 
   return {
     id: idValue,
-    name: activeForm.querySelector('input[placeholder="Alison G."]')?.value || '',
-    email: activeForm.querySelector('input[type="email"]')?.value || '',
-    date: activeForm.querySelector('input[type="date"]')?.value || '',
-    address: activeForm.querySelector('input[placeholder="Street"]')?.value || '',
-    status: activeForm.querySelector('#status').value,
+    name: inputs.name.value.trim(),
+    email: inputs.email.value.trim(),
+    date: inputs.date.value,
+    address: inputs.address.value.trim(),
+    status: inputs.status.value,
   };
 }
 
@@ -171,11 +187,12 @@ export function setFormData(invoice, discountPercentage) {
  * @returns {boolean} - true of form data is valid
  */
 export function validateFormData(data) {
-  if (!data.name || !data.email || !data.date) {
-    new NotificationUtils().alert(
-      'Please fill in all required fields and add at least one product',
-      { type: 'warning' },
-    );
+  const validator = new ValidationUtils();
+  const validation = validator.validateInvoiceForm(data);
+
+  if (!validation.isValid) {
+    const errorMessages = Object.values(validation.errors).join('\n');
+    new NotificationUtils().alert(errorMessages, { type: 'warning' });
     return false;
   }
   return true;

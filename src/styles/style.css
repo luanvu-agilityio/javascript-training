@@ -98,7 +98,10 @@
   background-color: var(--primary-bg-color);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.table__body .table__row:hover {
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2);
 }
 
 .table__cell:first-child {
@@ -163,6 +166,7 @@
 .form--create,
 .form--edit {
   flex: 1;
+  height: 100%;
   background-color: var(--primary-bg-color);
   border-radius: 1rem;
   padding: 3rem;
@@ -248,6 +252,11 @@
 .form__group-date .form__group-input {
   margin-top: 0;
 }
+
+.form__group:nth-child(1) .form__group-input {
+  cursor: not-allowed;
+}
+
 .form__group:nth-child(5) .form__group-input {
   flex: 1;
 }
