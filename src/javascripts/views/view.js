@@ -49,11 +49,9 @@ class InvoiceView {
 
     // Then open the new one
     popup.classList.add('active');
-    backdrop.classList.add('active');
 
     // Store references to active elements
     this.activePopup = popup;
-    this.activeBackdrop = backdrop;
   }
 
   /**
@@ -76,14 +74,13 @@ class InvoiceView {
 
         const row = clickedTrigger.closest('.table__row');
         const popup = row.querySelector('.popup-content');
-        const backdrop = row.querySelector('.popup-backdrop');
 
         // If clicking the trigger of an active popup, close it
         if (popup === this.activePopup) {
           this.closeActivePopup();
         } else {
           // Otherwise, open the new popup
-          this.openPopup(popup, backdrop);
+          this.openPopup(popup);
         }
       }
     });
@@ -93,13 +90,6 @@ class InvoiceView {
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();
-        this.closeActivePopup();
-      }
-    });
-
-    // Handle backdrop clicks
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('popup-backdrop')) {
         this.closeActivePopup();
       }
     });
@@ -128,8 +118,8 @@ class InvoiceView {
         }
         const favoriteClass = invoice.favorite ? 'favorite-icon-active' : 'favorite-icon-inactive';
         const favoriteIconSrc = invoice.favorite
-          ? './assets/images/icons/main-view-icons/favorite-icon-active.svg'
-          : './assets/images/icons/main-view-icons/favorite-icon-inactive.svg';
+          ? './assets/images/icons/main-view-icons/favorite-icon-active.png'
+          : './assets/images/icons/main-view-icons/favorite-icon-inactive.png';
 
         return Templates.invoiceTemplate
           .replace(/{{id}}/g, invoice.id)
@@ -139,7 +129,7 @@ class InvoiceView {
           .replace(/{{status}}/g, invoice.status)
           .replace('favorite-icon-inactive', favoriteClass)
           .replace(/{{statusLower}}/g, invoice.status.toLowerCase())
-          .replace(/favorite-icon-inactive\.svg/, favoriteIconSrc.split('/').pop());
+          .replace(/favorite-icon-inactive\.png/, favoriteIconSrc.split('/').pop());
       })
       .join('');
   }
@@ -217,8 +207,8 @@ class InvoiceView {
       const invoiceId = row.querySelector('[data-label="Invoice Id"]').textContent;
 
       favoriteIcon.src = isActive
-        ? './assets/images/icons/main-view-icons/favorite-icon-inactive.svg'
-        : './assets/images/icons/main-view-icons/favorite-icon-active.svg';
+        ? './assets/images/icons/main-view-icons/favorite-icon-inactive.png'
+        : './assets/images/icons/main-view-icons/favorite-icon-active.png';
 
       favoriteIcon.classList.toggle('favorite-icon-inactive', isActive);
       favoriteIcon.classList.toggle('favorite-icon-active', !isActive);

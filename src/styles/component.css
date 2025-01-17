@@ -270,10 +270,8 @@
 /* Popup Content */
 .popup-content {
   display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: absolute;
+  right: -200%;
   width: 18rem;
   background: white;
   border-radius: 12px;
@@ -282,10 +280,8 @@
   z-index: 999;
 }
 
-.popup-content.active,
-.popup-backdrop.active {
+.popup-content.active {
   display: block;
-  animation: fadeIn 0.2s ease;
 }
 
 @keyframes fadeIn {
@@ -361,9 +357,9 @@
 
 .status-complete {
   width: 16rem;
-  background-color: rgba(58, 54, 219, 0.1);
+  background-color: rgba(22, 163, 74, 0.15);
   padding: 1.5rem 4.5rem;
-  color: var(--deep-blue-color);
+  color: rgb(22, 163, 74);
   font-size: var(--font-size-14);
   line-height: 1.82rem;
   border-radius: 2.25rem;
@@ -371,10 +367,10 @@
 
 .status-pending {
   width: 16rem;
-  background: rgba(3, 168, 158, 0.1);
+  background-color: rgba(234, 179, 8, 0.15);
   padding: 1.5rem 4.5rem;
 
-  color: var(--blue-green-color);
+  color: rgb(234, 179, 8);
   font-size: var(--font-size-14);
   line-height: 1.82rem;
   border-radius: 2.25rem;
@@ -382,10 +378,10 @@
 
 .status-cancel {
   width: 16rem;
-  background: rgba(255, 105, 180, 0.1);
+  background-color: rgba(225, 29, 72, 0.15);
   padding: 1.5rem 4.5rem;
 
-  color: var(--red-pink-color);
+  color: rgb(225, 29, 72);
   font-size: var(--font-size-14);
   line-height: 1.82rem;
   border-radius: 2.25rem;
@@ -490,7 +486,6 @@
   margin-bottom: 1rem;
   opacity: 0;
   transform: translateX(100%);
-  transition: all 0.3s ease-in-out;
 }
 
 .notification.show {
@@ -506,8 +501,8 @@
 .notification-content {
   background: var(--white-color);
   border-radius: var(--space-8);
-  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15);
-  padding: var(--space-16);
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.2);
+  padding: 2rem;
   margin: var(--space-8);
 }
 
@@ -519,7 +514,9 @@
 }
 
 .notification-message {
-  font-size: var(--font-size-13);
+  font-size: var(--font-size-16);
+  text-align: center;
+  margin: 1.5rem 0;
 }
 
 .notification-title {
@@ -531,23 +528,27 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: var(--font-size-16);
+  font-size: var(--font-size-26);
   padding: 0;
 }
 
 .notification-buttons {
   display: flex;
-  gap: var(--space-8);
-  margin-top: 1.2rem;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .btn-confirm,
 .btn-cancel {
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.4rem;
+  padding: 1rem 2.5rem;
+  border-radius: 0.6rem;
   border: none;
   cursor: pointer;
+  font-size: var(--font-size-16);
   font-weight: 500;
+  min-width: 120px;
+  transition: all 0.2s ease;
 }
 
 .btn-confirm {
@@ -555,19 +556,46 @@
   color: var(--white-color);
 }
 
+.btn-confirm:hover {
+  background: var(--success-dark, #15803d);
+}
+
 .btn-cancel {
   background: var(--primary-bg-color);
   color: var(--black-color);
 }
 
+.btn-cancel:hover {
+  background: var(--gray-light, #e5e7eb);
+}
+
+.notification--warning {
+  position: absolute;
+  top: 50vh;
+  left: -175%;
+  width: 90%;
+  max-width: 400px;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+.notification--warning.show {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.notification--warning.hide {
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.notification-content.warning {
+  border-left: 0.4rem solid var(--warning);
+}
 .notification-content.success {
   border-left: 0.4rem solid var(--success);
 }
 .notification-content.error {
   border-left: 0.4rem solid var(--error);
-}
-.notification-content.warning {
-  border-left: 0.4rem solid var(--warning);
 }
 .notification-content.info {
   border-left: 0.4rem solid var(--info);
@@ -655,5 +683,19 @@
   .btn--primary {
     padding: 0.5rem;
     font-size: var(--font-size-13);
+  }
+
+  #notification-container {
+    width: 95%;
+  }
+
+  .notification-buttons {
+    flex-direction: column;
+  }
+
+  .btn-confirm,
+  .btn-cancel {
+    width: 100%;
+    margin: 0.5rem 0;
   }
 }
