@@ -1,14 +1,23 @@
 import NotificationUtils from '../helpers/notification-utils.js';
 import ValidationUtils from '../helpers/validation-utils.js';
 import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
+import UserErrorMessage from '../helpers/user-error-message.js';
 /**
  * Setup event listener for any form related actions
  * @param {Function} onDiscountChange - callback function to handle discount input changes
  */
+const userErrorMessage = new UserErrorMessage();
 export function setupFormEventListeners(onDiscountChange) {
-  setupFormCloseButton();
-  setupCreateFormButton();
-  setupDiscountInputHandler(onDiscountChange);
+  try {
+    setupFormCloseButton();
+    setupCreateFormButton();
+    setupDiscountInputHandler(onDiscountChange);
+  } catch (error) {
+    userErrorMessage.handleError(error, {
+      context: 'FormHandlers',
+      operation: 'setup',
+    });
+  }
 }
 
 /**
@@ -117,41 +126,49 @@ export function resetForm(onResetForm) {
  * @returns {Object} - the collected from data, null if no form is active
  */
 export function collectFormData() {
-  const activeForm =
-    document.querySelector('.form--create:not(.hidden)') ||
-    document.querySelector('.form--edit:not(.hidden)');
+  try {
+    const activeForm =
+      document.querySelector('.form--create:not(.hidden)') ||
+      document.querySelector('.form--edit:not(.hidden)');
 
-  if (!activeForm) return null;
-  const isEditForm = activeForm.classList.contains('form--edit');
+    if (!activeForm) return null;
+    const isEditForm = activeForm.classList.contains('form--edit');
 
-  // Get all form inputs
-  const inputs = {
-    id: activeForm.querySelector('.form__group-input, input[name="invoice-id"]'),
-    name: activeForm.querySelector('input[placeholder="Alison G."]'),
-    email: activeForm.querySelector('input[type="email"]'),
-    date: activeForm.querySelector('input[type="date"]'),
-    address: activeForm.querySelector('input[placeholder="Street"]'),
-    status: activeForm.querySelector('#status'),
-  };
+    // Get all form inputs
+    const inputs = {
+      id: activeForm.querySelector('.form__group-input, input[name="invoice-id"]'),
+      name: activeForm.querySelector('input[placeholder="Alison G."]'),
+      email: activeForm.querySelector('input[type="email"]'),
+      date: activeForm.querySelector('input[type="date"]'),
+      address: activeForm.querySelector('input[placeholder="Street"]'),
+      status: activeForm.querySelector('#status'),
+    };
 
-  //Validate all required input
-  if (!inputs.name || !inputs.email || !inputs.date || !inputs.address || !inputs.status) {
-    new NotificationUtils().alert('Form is missing required fields', { type: 'error' });
+    //Validate all required input
+    if (!inputs.name || !inputs.email || !inputs.date || !inputs.address || !inputs.status) {
+      new NotificationUtils().alert('Form is missing required fields', { type: 'error' });
+      return null;
+    }
+
+    const idValue = isEditForm
+      ? inputs.id?.value
+      : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId();
+
+    return {
+      id: idValue,
+      name: inputs.name.value.trim(),
+      email: inputs.email.value.trim(),
+      date: inputs.date.value,
+      address: inputs.address.value.trim(),
+      status: inputs.status.value,
+    };
+  } catch {
+    userErrorMessage.handleError(error, {
+      context: 'FormHandlers',
+      operation: 'data-collection',
+    });
     return null;
   }
-
-  const idValue = isEditForm
-    ? inputs.id?.value
-    : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId();
-
-  return {
-    id: idValue,
-    name: inputs.name.value.trim(),
-    email: inputs.email.value.trim(),
-    date: inputs.date.value,
-    address: inputs.address.value.trim(),
-    status: inputs.status.value,
-  };
 }
 
 /**
@@ -160,24 +177,31 @@ export function collectFormData() {
  * @param {number} discountPercentage - The discount percentage to set in the form.
  */
 export function setFormData(invoice, discountPercentage) {
-  const editForm = document.querySelector('.form--edit');
-  const fields = {
-    'input[placeholder="#876370"]': invoice.id,
-    'input[placeholder="Alison G."]': invoice.name,
-    'input[type="email"]': invoice.email,
-    'input[type="date"]': invoice.date,
-    'input[placeholder="Street"]': invoice.address,
-    '#status': invoice.status,
-  };
+  try {
+    const editForm = document.querySelector('.form--edit');
+    const fields = {
+      'input[placeholder="#876370"]': invoice.id,
+      'input[placeholder="Alison G."]': invoice.name,
+      'input[type="email"]': invoice.email,
+      'input[type="date"]': invoice.date,
+      'input[placeholder="Street"]': invoice.address,
+      '#status': invoice.status,
+    };
 
-  Object.entries(fields).forEach(([selector, value]) => {
-    const element = editForm.querySelector(selector);
-    if (element) element.value = value;
-  });
+    Object.entries(fields).forEach(([selector, value]) => {
+      const element = editForm.querySelector(selector);
+      if (element) element.value = value;
+    });
 
-  const discountInput = editForm.querySelector('.discount-input');
-  if (discountInput) {
-    discountInput.value = discountPercentage;
+    const discountInput = editForm.querySelector('.discount-input');
+    if (discountInput) {
+      discountInput.value = discountPercentage;
+    }
+  } catch (error) {
+    userErrorMessage.handleError(error, {
+      context: 'FormHandlers',
+      operation: 'form-data-setting',
+    });
   }
 }
 

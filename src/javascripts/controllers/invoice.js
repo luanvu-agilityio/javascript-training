@@ -5,6 +5,7 @@ import ValidationUtils from '../helpers/validation-utils.js';
 import NotificationUtils from '../helpers/notification-utils.js';
 import DataHandler from '../data-handler.js';
 import LoadingUtils from '../helpers/loading-utils.js';
+import UserErrorMessage from '../helpers/user-error-message.js';
 import * as formHandlers from './form-handlers.js';
 import * as productHandlers from './product-handlers.js';
 import { sortHandlers } from './sort-handler.js';
@@ -27,6 +28,7 @@ class InvoiceController {
     this.initializeServices();
     this.initializeState();
     this.loading = new LoadingUtils();
+    this.userErrorMessage = new UserErrorMessage();
     this.init();
   }
 
@@ -136,7 +138,10 @@ class InvoiceController {
       this.view.renderInvoiceList(this.invoices);
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
     } catch (error) {
-      this.notification.show('Failed to load invoices', { type: 'error' });
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'loading',
+      });
     }
   }
 
@@ -155,16 +160,22 @@ class InvoiceController {
    * @param {string} searchInput - the search term entered by user
    */
   handleSearch(searchInput) {
-    if (!searchInput) {
-      this.view.renderInvoiceList(this.invoices);
-      return;
+    try {
+      if (!searchInput) {
+        this.view.renderInvoiceList(this.invoices);
+        return;
+      }
+
+      const formattedInput = searchInput.toLowerCase().trim();
+      const filteredInvoices = this.filterInvoices(formattedInput);
+      this.view.renderInvoiceList(filteredInvoices);
+      this.view.updateHeaderCheckbox();
+    } catch (error) {
+      this.errorHandler.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'search',
+      });
     }
-
-    const formattedInput = searchInput.toLowerCase().trim();
-    const filteredInvoices = this.filterInvoices(formattedInput);
-
-    this.view.renderInvoiceList(filteredInvoices);
-    this.view.updateHeaderCheckbox();
   }
 
   filterInvoices(searchTerm) {
@@ -248,7 +259,10 @@ class InvoiceController {
       await this.createInvoiceWithProducts(formData, products);
       this.handleSuccessfulCreation(formData);
     } catch (error) {
-      this.notification.show('Failed to create invoice', { type: 'error' });
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'creation',
+      });
     }
   }
 
@@ -275,7 +289,10 @@ class InvoiceController {
 
       this.populateEditForm(invoice, products);
     } catch (error) {
-      this.notification.show('Failed to load invoice data', { type: 'error' });
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'editing',
+      });
     }
   }
 
@@ -321,7 +338,10 @@ class InvoiceController {
       await this.updateInvoiceWithProducts(formData, products);
       this.handleSuccessfulUpdate(formData, products);
     } catch (error) {
-      this.notification.show('Failed to update invoice', { type: 'error' });
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'updating',
+      });
     }
   }
 
@@ -527,8 +547,10 @@ class InvoiceController {
       this.view.renderInvoiceList(this.invoices);
       this.view.updateHeaderCheckbox();
     } catch (error) {
-      console.error('Error deleting invoice(s):', error);
-      this.notification.show('Failed to delete invoice(s)', { type: 'error' });
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'deletion',
+      });
     }
   }
 
@@ -578,7 +600,10 @@ class InvoiceController {
         this.view.clearInvoicePreview();
       }
     } catch (error) {
-      console.error('Error updating preview:', error);
+      this.userErrorMessage.handleError(error, {
+        context: 'InvoiceController',
+        operation: 'preview-update',
+      });
     }
   }
 }

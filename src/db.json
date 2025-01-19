@@ -10,15 +10,6 @@
       "favorite": false
     },
     {
-      "id": "INV-25-01-8192",
-      "name": "Jonathan M",
-      "email": "jonathanm@gmail.com",
-      "date": "2024-12-29",
-      "address": "123 Clause Ave",
-      "status": "Pending",
-      "favorite": false
-    },
-    {
       "id": "INV-25-01-3030",
       "name": "aaaa",
       "email": "aaa@gmail.com",
@@ -115,7 +106,7 @@
       "invoiceId": "INV-25-01-2906"
     },
     {
-      "id": "e2ed",
+      "id": "b99e",
       "name": "tv",
       "rate": 500,
       "quantity": 2,
@@ -123,20 +114,12 @@
       "invoiceId": "INV-25-01-6999"
     },
     {
-      "id": "1e3a",
+      "id": "5d5c",
       "name": "bag",
       "rate": 22,
       "quantity": 22,
       "amount": 484,
       "invoiceId": "INV-25-01-6999"
-    },
-    {
-      "id": "c03a",
-      "name": "pc",
-      "rate": 2000,
-      "quantity": 1,
-      "amount": 2000,
-      "invoiceId": "INV-25-01-8192"
     }
   ]
 }
