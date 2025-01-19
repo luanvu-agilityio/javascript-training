@@ -109,7 +109,10 @@ export function updateAmounts(tbody, onAmountsUpdate, discountPercentage = 5) {
       const amount = rate * qty;
       subtotal += amount;
 
-      updateRowAmount(row, amount);
+      const amountCell = row.querySelector('td:nth-child(4)');
+      if (amountCell) {
+        amountCell.textContent = `$${amount.toFixed(2)}`;
+      }
     });
 
     const discountAmount = (subtotal * discountPercentage) / 100;

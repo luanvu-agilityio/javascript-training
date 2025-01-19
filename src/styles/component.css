@@ -476,7 +476,7 @@
 #notification-container {
   position: fixed;
   top: 2rem;
-  right: 2rem;
+  left: calc(50% - 11rem);
   z-index: 9999;
   max-width: 40rem;
   width: 100%;
@@ -569,23 +569,12 @@
   background: var(--gray-light, #e5e7eb);
 }
 
-.notification--warning {
-  position: absolute;
-  top: 50vh;
-  left: -175%;
-  width: 90%;
-  max-width: 400px;
-  transform: translate(-50%, -50%);
-  margin: 0;
-}
 .notification--warning.show {
   opacity: 1;
-  transform: translate(-50%, -50%);
 }
 
 .notification--warning.hide {
   opacity: 0;
-  transform: translate(-50%, -50%);
 }
 
 .notification-content.warning {
@@ -697,5 +686,8 @@
   .btn-cancel {
     width: 100%;
     margin: 0.5rem 0;
+  }
+  .notification--warning.show {
+    transform: translate(-20%, 5%);
   }
 }
