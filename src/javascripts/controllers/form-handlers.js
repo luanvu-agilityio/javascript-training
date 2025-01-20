@@ -6,6 +6,7 @@ import UserErrorMessage from '../helpers/user-error-message.js';
  * Setup event listener for any form related actions
  * @param {Function} onDiscountChange - callback function to handle discount input changes
  */
+const content = document.querySelector('.content');
 const userErrorMessage = new UserErrorMessage();
 export function setupFormEventListeners(onDiscountChange) {
   try {
@@ -25,7 +26,12 @@ export function setupFormEventListeners(onDiscountChange) {
  */
 export function setupFormCloseButton() {
   document.querySelectorAll('.form__header-close').forEach((btn) => {
-    btn.addEventListener('click', () => closeForm());
+    btn.addEventListener('click', () => {
+      closeForm();
+      if (content) {
+        content.classList.add('hidden');
+      }
+    });
   });
 }
 
@@ -33,7 +39,12 @@ export function setupFormCloseButton() {
  * setup event listener for the create form button
  */
 export function setupCreateFormButton() {
-  document.querySelector('.btn--primary').addEventListener('click', () => showCreateForm());
+  document.querySelector('.btn--primary').addEventListener('click', () => {
+    showCreateForm();
+    if (content) {
+      content.classList.remove('hidden');
+    }
+  });
 }
 
 /**

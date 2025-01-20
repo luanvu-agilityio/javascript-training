@@ -234,6 +234,10 @@ class InvoiceController {
     if (e.target.closest('.btn--edit')) {
       e.preventDefault();
       e.stopPropagation();
+      const content = document.querySelector('.content');
+      if (content) {
+        content.classList.remove('hidden');
+      }
       this.editInvoice(id);
       const popupContent = e.target.closest('.popup-content');
       if (popupContent) {
