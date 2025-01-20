@@ -70,7 +70,7 @@ a {
   --red-pink-color: #ff69b4;
   --deep-blue-color: #3a36db;
   --white-color: #ffffff;
-  --gray-color: #64748b;
+  --gray-color: rgba(153, 178, 198, 1);
 
   --primary-bg-color: #ffffff;
   --secondary-bg-color: #f1f4fa;

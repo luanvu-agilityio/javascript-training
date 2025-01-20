@@ -154,178 +154,6 @@
   gap: 1rem;
 }
 
-/* Create, edit invoice section */
-.content {
-  flex: 1;
-  padding: 3rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 3rem;
-}
-
-.form--create,
-.form--edit {
-  flex: 1;
-  height: 100%;
-  background-color: var(--primary-bg-color);
-  border-radius: 1rem;
-  padding: 3rem;
-  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
-}
-
-.form__header-title {
-  margin-bottom: 2rem;
-  font-size: var(--font-size-26);
-  font-weight: var(--font-weight-bold);
-}
-
-.form__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.form__header-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.form__header-close:hover {
-  opacity: 0.8;
-}
-
-.form__header-close img {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.form__camera {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 4rem auto;
-  width: 14rem;
-  height: 14rem;
-  background-color: var(--secondary-bg-color);
-  border-radius: 50%;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.form__group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form__group:nth-child(2) {
-  justify-content: space-between;
-}
-
-.form__group:nth-child(5) {
-  grid-column: 1 / -1;
-}
-
-.form__group-address {
-  display: flex;
-  background-color: var(--secondary-bg-color);
-  margin-top: 1rem;
-
-  border-radius: 1rem;
-}
-.form__group-date {
-  display: flex;
-  justify-content: space-between;
-  background-color: var(--secondary-bg-color);
-
-  border-radius: 1rem;
-}
-
-.form__group-date .form__group-input {
-  margin-top: 0;
-}
-
-.form__group:nth-child(1) .form__group-input {
-  cursor: not-allowed;
-}
-
-.form__group:nth-child(5) .form__group-input {
-  flex: 1;
-}
-
-.form__group:nth-child(2) .form__group-input::-webkit-calendar-picker-indicator {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-
-  height: auto;
-  width: auto;
-  background: transparent;
-  color: transparent;
-  cursor: pointer;
-}
-
-.form__group:nth-child(2) .form__group-input {
-  flex: 1;
-  position: relative;
-}
-
-.form__group-address-icon {
-  padding-right: 1.7rem;
-}
-
-.form__group-address .form__group-input {
-  margin-top: 0;
-}
-
-.form__group-label {
-  font-size: var(--font-size-16);
-  font-weight: var(--font-weight-medium);
-  color: var(--black-color);
-}
-
-.form__group-input {
-  margin-top: 1rem;
-  padding: 1.7rem;
-  background-color: var(--secondary-bg-color);
-  border-radius: 1rem;
-  border: none;
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weight-regular);
-  transition: border-color 0.3s ease;
-}
-
-.form__group-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-.form__group-input--select {
-  appearance: none;
-  background-image: url('../assets/images/icons/create-invoice-modal-icons/down-arrow-icon.png');
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
-  padding-right: 2.5rem;
-  cursor: pointer;
-}
-
-.form__group-input--select:focus {
-  outline: none;
-  border-color: var(--blue-green-color);
-  box-shadow: 0 0 0 0.2rem rgba(74, 108, 247, 0.1);
-}
-
 /* Style the dropdown options */
 .form__group-input--select option {
   padding: var(--space-8);
@@ -397,14 +225,14 @@
   flex: 1;
   background-color: var(--primary-bg-color);
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 2rem 2rem 3rem;
 }
 
 .preview__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3.5rem;
 }
 
 .preview__header-title {
@@ -681,6 +509,7 @@
   line-height: 13.02px;
   text-align: left;
   margin-bottom: 2rem;
+  color: rgba(153, 178, 198, 1);
 }
 
 .preview-footer__company {
@@ -720,196 +549,6 @@
   font-weight: var(--font-weight-regular);
   line-height: 7.81px;
   color: var(--gray-color);
-}
-
-/* components */
-/* Side bar component */
-.sidebar {
-  min-width: 22rem;
-  background-color: var(--primary-bg-color);
-  height: 100vh;
-  position: relative;
-}
-
-.sidebar__brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem;
-}
-
-.sidebar__brand-text {
-  font-family: var(--font-family-primary);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-26);
-  line-height: 3.38rem;
-}
-
-.sidebar__menu {
-  margin-top: 5rem;
-  display: flex;
-  flex-direction: column;
-
-  gap: 1rem;
-  width: 100%;
-}
-
-.sidebar__menu-item {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  position: relative;
-}
-
-.sidebar__menu-link {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.sidebar__menu-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0.75rem 1.5rem 3rem;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.sidebar__menu-text {
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-16);
-  font-weight: var(--font-weight-medium);
-  line-height: 2.083rem;
-  color: rgba(6, 21, 43, 0.5);
-  transition: all 0.3s ease;
-}
-
-.sidebar__menu-link:hover .sidebar__menu-icon {
-  background-color: rgba(58, 54, 219, 0.1);
-}
-.sidebar__menu-link:hover .sidebar__menu-text {
-  color: var(--deep-blue-color);
-}
-
-.sidebar__menu-item.active .sidebar__menu-icon {
-  background-color: rgba(58, 54, 219, 0.1);
-}
-
-.sidebar__menu-link.active .sidebar__menu-text {
-  color: var(--deep-blue-color);
-}
-
-.sidebar__upgrade {
-  position: absolute;
-  left: 2.5rem;
-  bottom: 6rem;
-  color: var(--red-pink-color);
-}
-
-.user-profile {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.profile__name {
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-13);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.69rem;
-  color: var(--black-color);
-}
-
-.profile__status {
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-11);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.43rem;
-  color: var(--black-color);
-  opacity: 0.5;
-}
-
-.sidebar-toggle {
-  display: none;
-}
-
-.sidebar-toggle-label {
-  display: none;
-  position: fixed;
-  bottom: 4rem;
-  right: 1rem;
-  width: 3rem;
-  height: 3rem;
-  background: var(--primary-bg-color);
-  border-radius: 50%;
-  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.hidden {
-  display: none;
-}
-
-.mobile-sort {
-  display: none;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.sort-dropdown {
-  position: relative;
-  width: 160px;
-}
-
-.sort-dropdown__icon {
-  transition: transform 0.2s ease;
-}
-
-.sort-dropdown.active .sort-dropdown__icon {
-  transform: rotate(180deg);
-}
-
-.sort-dropdown__menu {
-  display: none;
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  background-color: var(--primary-bg-color);
-  border-radius: 8px;
-  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.sort-dropdown__menu.active {
-  display: block;
-}
-
-.sort-dropdown__option {
-  width: 100%;
-  padding: 1.2rem 1.6rem;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-  font-size: var(--font-size-14);
-  color: var(--black-color);
-}
-
-.sort-dropdown__option:hover {
-  background-color: var(--secondary-bg-color);
-}
-
-.sort-icon--mobile {
-  width: 1.5rem;
-  height: 1.5rem;
 }
 
 /* Mobile styles */
@@ -974,11 +613,9 @@
   .table__row {
     display: flex;
     flex-direction: column;
-
     margin-bottom: 1.6rem;
     border-radius: 1.2rem;
     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.08);
-
     margin: 1rem auto;
   }
 
@@ -999,6 +636,7 @@
     justify-content: flex-start;
     align-items: center;
     content: attr(data-label);
+
     width: 10rem;
     min-width: 9rem;
     color: var(--black-color);
@@ -1047,9 +685,10 @@
   .popup-content {
     display: flex;
     position: static;
-    width: 100%;
-    flex-direction: row;
     justify-content: space-evenly;
+    width: 100%;
+
+    flex-direction: row;
     border: none;
     box-shadow: none;
     padding: 0 1rem;
@@ -1183,15 +822,16 @@
   }
 
   .sidebar {
+    z-index: 900;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+
     height: 100vh;
     transform: translateY(calc(100% - 4rem));
     transition: transform 0.3s ease;
     background: var(--primary-bg-color);
-    z-index: 900;
   }
 
   .sidebar__nav {
@@ -1209,6 +849,7 @@
     flex-direction: row;
     justify-content: center;
     flex-wrap: nowrap;
+
     margin-top: 0;
     gap: 1.5rem;
     padding: 0 1rem;
