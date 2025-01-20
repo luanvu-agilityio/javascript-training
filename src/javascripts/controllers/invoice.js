@@ -359,6 +359,13 @@ class InvoiceController {
       this.notification.show('Please add at least one product to the invoice', { type: 'warning' });
       return null;
     }
+
+    const validation = this.validator.validateProducts(products);
+    if (!validation.isValid) {
+      const errorMessage = this.validator.formatValidationErrors({ products: validation.errors });
+      this.notification.show(errorMessage, { type: 'error' });
+      return null;
+    }
     return products;
   }
 
