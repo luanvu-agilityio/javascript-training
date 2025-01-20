@@ -268,7 +268,7 @@
 
 .preview__customer-email {
   font-family: var(--font-family-secondary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 10.89px;
   color: var(--deep-blue-color);
@@ -276,7 +276,7 @@
 
 .email-address {
   font-family: var(--font-family-primary);
-  font-size: 1rem;
+  font-size: var(--font-size-13);
   line-height: 1.302rem;
   color: var(--black-color);
   margin-left: 0.5rem;
@@ -284,7 +284,7 @@
 
 .preview__customer-phone {
   font-family: var(--font-family-secondary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 10.89px;
   color: var(--deep-blue-color);
@@ -292,7 +292,7 @@
 
 .phone-number {
   font-family: var(--font-family-primary);
-  font-size: 1rem;
+  font-size: var(--font-size-13);
   line-height: 1.302rem;
   color: var(--black-color);
   margin-left: 0.5rem;
@@ -317,9 +317,14 @@
   margin-top: 2rem;
 }
 
+.recipient__name,
+.recipient__address {
+  font-size: var(--font-size-16);
+}
+
 .recipient__info {
   text-transform: uppercase;
-  font-size: var(--font-size-8);
+  font-size: var(--font-size-16);
   font-weight: var(--font-weight-bold);
   line-height: 10.42px;
   text-align: left;
@@ -336,7 +341,7 @@
 
 .preview-company__email {
   font-family: var(--font-family-secondary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 10.89px;
   color: var(--deep-blue-color);
@@ -349,7 +354,7 @@
 
 .preview-company__phone {
   font-family: var(--font-family-secondary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 10.89px;
   color: var(--deep-blue-color);
@@ -370,7 +375,7 @@
 
 .preview__invoice-label--id,
 .preview__invoice-label--date {
-  font-size: var(--font-size-10);
+  font-size: var(--font-size-16);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: right;
@@ -379,7 +384,7 @@
 
 .preview__invoice-label--id span,
 .preview__invoice-label--date span {
-  font-size: var(--font-size-8);
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 10.42px;
   text-align: right;
@@ -401,7 +406,7 @@
 }
 
 .preview-table .product-list__header {
-  font-size: var(--font-size-10);
+  font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -420,7 +425,7 @@
 
 .preview-table__row .product-list__cell,
 .preview-summary__value {
-  font-size: var(--font-size-10);
+  font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -450,7 +455,7 @@
 }
 
 .preview-summary__label {
-  font-size: var(--font-size-10);
+  font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -467,7 +472,7 @@
 }
 
 .preview-footer {
-  font-size: var(--font-size-10);
+  font-size: var(--font-size-13);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -496,7 +501,6 @@
 
 .notes__header {
   margin-bottom: 2rem;
-  font-size: var(--font-size-10);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -504,7 +508,6 @@
 }
 
 .notes__content {
-  font-size: var(--font-size-10);
   font-weight: var(--font-weight-regular);
   line-height: 13.02px;
   text-align: left;
@@ -521,7 +524,7 @@
 
 .preview-footer__company-details,
 .preview-footer__company-copyright {
-  font-size: var(--font-size-6);
+  font-size: var(--font-size-10);
   font-weight: var(--font-weight-regular);
   line-height: 10px;
   text-align: left;
@@ -538,14 +541,14 @@
 
 .preview-footer__company .preview__customer-email,
 .preview-footer__company .preview__customer-phone {
-  font-size: var(--font-size-6);
+  font-size: var(--font-size-10);
   font-weight: var(--font-weight-regular);
   line-height: 8.17px;
 }
 
 .preview-footer__company .email-address,
 .preview-footer__company .phone-number {
-  font-size: var(--font-size-6);
+  font-size: var(--font-size-10);
   font-weight: var(--font-weight-regular);
   line-height: 7.81px;
   color: var(--gray-color);
