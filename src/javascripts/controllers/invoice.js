@@ -28,7 +28,7 @@ class InvoiceController {
     this.initializeServices();
     this.initializeState();
     this.loading = new LoadingUtils();
-    this.userErrorMessage = new UserErrorMessage();
+    // this.userErrorMessage = new UserErrorMessage();
     this.init();
   }
 
@@ -138,10 +138,12 @@ class InvoiceController {
       this.view.renderInvoiceList(this.invoices);
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'loading',
-      });
+      this.notification.show('Failed to load invoices', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'loading',
+      // });
     }
   }
 
@@ -160,22 +162,22 @@ class InvoiceController {
    * @param {string} searchInput - the search term entered by user
    */
   handleSearch(searchInput) {
-    try {
-      if (!searchInput) {
-        this.view.renderInvoiceList(this.invoices);
-        return;
-      }
-
-      const formattedInput = searchInput.toLowerCase().trim();
-      const filteredInvoices = this.filterInvoices(formattedInput);
-      this.view.renderInvoiceList(filteredInvoices);
-      this.view.updateHeaderCheckbox();
-    } catch (error) {
-      this.errorHandler.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'search',
-      });
+    // try {
+    if (!searchInput) {
+      this.view.renderInvoiceList(this.invoices);
+      return;
     }
+
+    const formattedInput = searchInput.toLowerCase().trim();
+    const filteredInvoices = this.filterInvoices(formattedInput);
+    this.view.renderInvoiceList(filteredInvoices);
+    this.view.updateHeaderCheckbox();
+    // } catch (error) {
+    //   this.errorHandler.handleError(error, {
+    //     context: 'InvoiceController',
+    //     operation: 'search',
+    //   });
+    // }
   }
 
   filterInvoices(searchTerm) {
@@ -263,10 +265,12 @@ class InvoiceController {
       await this.createInvoiceWithProducts(formData, products);
       this.handleSuccessfulCreation(formData);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'creation',
-      });
+      this.notification.show('Failed to create invoice', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'creation',
+      // });
     }
   }
 
@@ -293,10 +297,12 @@ class InvoiceController {
 
       this.populateEditForm(invoice, products);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'editing',
-      });
+      this.notification.show('Failed to load invoice data', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'editing',
+      // });
     }
   }
 
@@ -342,10 +348,12 @@ class InvoiceController {
       await this.updateInvoiceWithProducts(formData, products);
       this.handleSuccessfulUpdate(formData, products);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'updating',
-      });
+      this.notification.show('Failed to update invoice', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'updating',
+      // });
     }
   }
 
@@ -423,7 +431,7 @@ class InvoiceController {
       formHandlers.resetForm();
       this.view.clearInvoicePreview();
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } finally {
       this.loading.hide();
       this.notification.show('Invoice created successfully', { type: 'success' });
@@ -442,7 +450,7 @@ class InvoiceController {
         this.notification.show('Invoice updated successfully', { type: 'success' });
         formHandlers.resetFormStates();
       }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } finally {
       this.loading.hide();
       this.notification.show('Invoice updated successfully', { type: 'success' });
@@ -558,10 +566,13 @@ class InvoiceController {
       this.view.renderInvoiceList(this.invoices);
       this.view.updateHeaderCheckbox();
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'deletion',
-      });
+      console.error('Error deleting invoice(s):', error);
+      this.notification.show('Failed to delete invoice(s)', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'deletion',
+      // });
     }
   }
 
@@ -611,10 +622,12 @@ class InvoiceController {
         this.view.clearInvoicePreview();
       }
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'preview-update',
-      });
+      console.error('Error updating preview:', error);
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'preview-update',
+      // });
     }
   }
 }

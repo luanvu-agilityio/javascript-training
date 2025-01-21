@@ -5,17 +5,17 @@ import UserErrorMessage from '../helpers/user-error-message.js';
  * Sets up event listeners for product list actions.
  * @param {Function} onAmountsUpdate - Callback function to handle updates to amounts.
  */
-const userErrorMessage = new UserErrorMessage();
+// const userErrorMessage = new UserErrorMessage();
 export function setupProductListHandlers(onAmountsUpdate) {
-  try {
-    setupAddProductButtons();
-    setupProductTableListeners(onAmountsUpdate);
-  } catch (error) {
-    userErrorMessage.handleError(error, {
-      context: 'ProductHandlers',
-      operation: 'setup',
-    });
-  }
+  // try {
+  setupAddProductButtons();
+  setupProductTableListeners(onAmountsUpdate);
+  // } catch (error) {
+  //   userErrorMessage.handleError(error, {
+  //     context: 'ProductHandlers',
+  //     operation: 'setup',
+  //   });
+  // }
 }
 
 /**
@@ -97,35 +97,35 @@ function setupTableBodyListeners(tbody, onAmountsUpdate) {
  * @param {Function} onAmountsUpdate - Callback function to handle updates to amounts.
  */
 export function updateAmounts(tbody, onAmountsUpdate, discountPercentage = 5) {
-  try {
-    if (!tbody) return;
+  // try {
+  if (!tbody) return;
 
-    const rows = tbody.querySelectorAll('tr');
-    let subtotal = 0;
+  const rows = tbody.querySelectorAll('tr');
+  let subtotal = 0;
 
-    rows.forEach((row) => {
-      const rate = parseFloat(row.querySelector('.rate-input')?.value) || 0;
-      const qty = parseInt(row.querySelector('.qty-input')?.value) || 0;
-      const amount = rate * qty;
-      subtotal += amount;
+  rows.forEach((row) => {
+    const rate = parseFloat(row.querySelector('.rate-input')?.value) || 0;
+    const qty = parseInt(row.querySelector('.qty-input')?.value) || 0;
+    const amount = rate * qty;
+    subtotal += amount;
 
-      const amountCell = row.querySelector('td:nth-child(4)');
-      if (amountCell) {
-        amountCell.textContent = `$${amount.toFixed(2)}`;
-      }
-    });
+    const amountCell = row.querySelector('td:nth-child(4)');
+    if (amountCell) {
+      amountCell.textContent = `$${amount.toFixed(2)}`;
+    }
+  });
 
-    const discountAmount = (subtotal * discountPercentage) / 100;
-    const total = subtotal - discountAmount;
+  const discountAmount = (subtotal * discountPercentage) / 100;
+  const total = subtotal - discountAmount;
 
-    updatePreviewTotals(subtotal, discountAmount, total);
-    onAmountsUpdate?.();
-  } catch (error) {
-    userErrorMessage.handleError(error, {
-      context: 'ProductHandlers',
-      operation: 'amount-calculation',
-    });
-  }
+  updatePreviewTotals(subtotal, discountAmount, total);
+  onAmountsUpdate?.();
+  // } catch (error) {
+  //   userErrorMessage.handleError(error, {
+  //     context: 'ProductHandlers',
+  //     operation: 'amount-calculation',
+  //   });
+  // }
 }
 
 /**
@@ -135,20 +135,20 @@ export function updateAmounts(tbody, onAmountsUpdate, discountPercentage = 5) {
  * @param {number} total - The total amount after discount.
  */
 function updatePreviewTotals(subtotal, discountAmount, total) {
-  try {
-    const previewSection = document.querySelector('.preview-summary');
-    if (previewSection) {
-      const values = previewSection.querySelectorAll('.preview-summary__value');
-      if (values[0]) values[0].textContent = `$${subtotal.toFixed(2)}`;
-      if (values[1]) values[1].textContent = `$${discountAmount.toFixed(2)}`;
-      if (values[2]) values[2].textContent = `$${total.toFixed(2)}`;
-    }
-  } catch {
-    userErrorMessage.handleError(error, {
-      context: 'ProductHandlers',
-      operation: 'update-preview-totals',
-    });
+  // try {
+  const previewSection = document.querySelector('.preview-summary');
+  if (previewSection) {
+    const values = previewSection.querySelectorAll('.preview-summary__value');
+    if (values[0]) values[0].textContent = `$${subtotal.toFixed(2)}`;
+    if (values[1]) values[1].textContent = `$${discountAmount.toFixed(2)}`;
+    if (values[2]) values[2].textContent = `$${total.toFixed(2)}`;
   }
+  // } catch {
+  //   userErrorMessage.handleError(error, {
+  //     context: 'ProductHandlers',
+  //     operation: 'update-preview-totals',
+  //   });
+  // }
 }
 
 /**
@@ -156,41 +156,39 @@ function updatePreviewTotals(subtotal, discountAmount, total) {
  * @returns {Array<Object>} An array of product objects.
  */
 export function collectProductData() {
-  try {
-    const activeForm = document.querySelector(
-      '.form--create:not(.hidden), .form--edit:not(.hidden)',
-    );
-    if (!activeForm) return [];
+  // try {
+  const activeForm = document.querySelector('.form--create:not(.hidden), .form--edit:not(.hidden)');
+  if (!activeForm) return [];
 
-    const tbody = activeForm.querySelector('.product-list__table tbody');
-    if (!tbody) return [];
+  const tbody = activeForm.querySelector('.product-list__table tbody');
+  if (!tbody) return [];
 
-    const products = [];
-    const rows = tbody.querySelectorAll('tr');
+  const products = [];
+  const rows = tbody.querySelectorAll('tr');
 
-    rows.forEach((row) => {
-      const name = row.querySelector('.product-input')?.value?.trim() || '';
-      const rate = parseFloat(row.querySelector('.rate-input')?.value) || 0;
-      const quantity = parseInt(row.querySelector('.qty-input')?.value) || 0;
+  rows.forEach((row) => {
+    const name = row.querySelector('.product-input')?.value?.trim() || '';
+    const rate = parseFloat(row.querySelector('.rate-input')?.value) || 0;
+    const quantity = parseInt(row.querySelector('.qty-input')?.value) || 0;
 
-      if (name || rate || quantity) {
-        products.push({
-          name,
-          rate,
-          quantity,
-          amount: rate * quantity,
-        });
-      }
-    });
+    if (name || rate || quantity) {
+      products.push({
+        name,
+        rate,
+        quantity,
+        amount: rate * quantity,
+      });
+    }
+  });
 
-    return products;
-  } catch {
-    userErrorMessage.handleError(error, {
-      context: 'ProductHandlers',
-      operation: 'data-collection',
-    });
-    return [];
-  }
+  return products;
+  // } catch {
+  //   userErrorMessage.handleError(error, {
+  //     context: 'ProductHandlers',
+  //     operation: 'data-collection',
+  //   });
+  //   return [];
+  // }
 }
 
 /**
