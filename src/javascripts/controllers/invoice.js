@@ -373,43 +373,50 @@ class InvoiceController {
   }
 
   async createInvoiceWithProducts(formData, products) {
-    const invoice = await this.dataHandler.createInvoice({
-      ...formData,
-      favorite: false,
-    });
-
-    await Promise.all(
-      products.map((product) =>
-        this.dataHandler.addProduct({
-          ...product,
-          invoiceId: invoice.id,
-        }),
-      ),
+    const invoice = await this.dataHandler.createInvoiceTransaction(
+      {
+        ...formData,
+        favorite: false,
+      },
+      products,
     );
+    return result.invoice;
+    // await Promise.all(
+    //   products.map((product) =>
+    //     this.dataHandler.addProduct({
+    //       ...product,
+    //       invoiceId: invoice.id,
+    //     }),
+    //   ),
+    // );
 
-    return invoice;
+    // return invoice;
   }
 
   async updateInvoiceWithProducts(formData, products) {
-    const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
-      ...formData,
-      favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
-    });
-
-    const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
-    await Promise.all(
-      existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+    const updatedInvoice = await this.dataHandler.updateInvoiceTransaction(
+      formData.id,
+      {
+        ...formData,
+        favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
+      },
+      products,
     );
-    await Promise.all(
-      products.map((product) =>
-        this.dataHandler.addProduct({
-          ...product,
-          invoiceId: formData.id,
-        }),
-      ),
-    );
+    return result.invoice;
+    // const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    // await Promise.all(
+    //   existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+    // );
+    // await Promise.all(
+    //   products.map((product) =>
+    //     this.dataHandler.addProduct({
+    //       ...product,
+    //       invoiceId: formData.id,
+    //     }),
+    //   ),
+    // );
 
-    return updatedInvoice;
+    // return updatedInvoice;
   }
 
   async handleSuccessfulCreation(invoice) {

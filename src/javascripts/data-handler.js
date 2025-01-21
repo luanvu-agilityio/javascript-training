@@ -2,6 +2,125 @@ import { getApiUrl } from './config.js';
 class DataHandler {
   constructor() {
     this.rootUrl = getApiUrl();
+    this.pendingTransactions = new Map();
+  }
+
+  async acquireLock(invoiceId) {
+    if (this.pendingTransactions.has(invoiceId)) {
+      throw new Error('Another operation is in progress for this invoice');
+    }
+    this.pendingTransactions.set(invoiceId, true);
+  }
+
+  releaseLock(invoiceId) {
+    this.pendingTransactions.delete(invoiceId);
+  }
+
+  // New method to handle invoice creation atomically
+  async createInvoiceTransaction(invoiceData, products) {
+    const tempId = invoiceData.id;
+    try {
+      await this.acquireLock(tempId);
+
+      // First create the invoice
+      const invoice = await this.createInvoice(invoiceData);
+
+      try {
+        // Then create all products
+        await Promise.all(
+          products.map((product) =>
+            this.addProduct({
+              ...product,
+              invoiceId: invoice.id,
+            }),
+          ),
+        );
+
+        return {
+          success: true,
+          invoice,
+          products,
+        };
+      } catch (error) {
+        // If product creation fails, delete the invoice to maintain consistency
+        await this.deleteInvoice(invoice.id);
+        throw error;
+      }
+    } finally {
+      this.releaseLock(tempId);
+    }
+  }
+
+  // New method to handle invoice updates atomically
+  async updateInvoiceTransaction(invoiceId, invoiceData, newProducts) {
+    try {
+      await this.acquireLock(invoiceId);
+
+      // First verify the invoice exists
+      const existingInvoice = await this.getInvoiceById(invoiceId);
+      if (!existingInvoice) {
+        throw new Error('Invoice not found');
+      }
+
+      // Get existing products
+      const existingProducts = await this.getProductsByInvoiceId(invoiceId);
+
+      try {
+        // Update invoice first
+        const updatedInvoice = await this.updateInvoice(invoiceId, invoiceData);
+
+        // Delete all existing products
+        await Promise.all(existingProducts.map((product) => this.deleteProduct(product.id)));
+
+        // Create all new products
+        const updatedProducts = await Promise.all(
+          newProducts.map((product) =>
+            this.addProduct({
+              ...product,
+              invoiceId: invoiceId,
+            }),
+          ),
+        );
+
+        return {
+          success: true,
+          invoice: updatedInvoice,
+          products: updatedProducts,
+        };
+      } catch (error) {
+        // If anything fails, try to restore the original state
+        try {
+          await this.updateInvoice(invoiceId, existingInvoice);
+          await Promise.all(
+            existingProducts.map((product) =>
+              this.addProduct({
+                ...product,
+                invoiceId: invoiceId,
+              }),
+            ),
+          );
+        } catch (rollbackError) {
+          console.error('Rollback failed:', rollbackError);
+        }
+        throw error;
+      }
+    } finally {
+      this.releaseLock(invoiceId);
+    }
+  }
+
+  // Keep existing methods but add retry logic
+  async getInvoiceList(retries = 3) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(`${this.rootUrl}/invoices`);
+        if (!response.ok) throw new Error('Failed to fetch invoices');
+        return await response.json();
+      } catch (error) {
+        if (i === retries - 1) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
+      }
+    }
   }
   /**
    * Invoice methods
