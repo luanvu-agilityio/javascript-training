@@ -10,24 +10,16 @@
       "favorite": false
     },
     {
-      "id": "INV-25-01-2906",
-      "name": "aaaaaaaa",
-      "email": "aaaaaa@gmail.com",
-      "date": "2024-12-30",
-      "address": "1122 sadasda",
+      "id": 25013986,
+      "name": "aaaa",
+      "email": "aaaaaaa@gmail.com",
+      "date": "2025-01-02",
+      "address": "123sssssss",
       "status": "Complete",
       "favorite": false
     }
   ],
   "products": [
-    {
-      "id": "3464",
-      "name": "ccc",
-      "rate": 222,
-      "quantity": 222,
-      "amount": 49284,
-      "invoiceId": "INV-25-01-2906"
-    },
     {
       "id": "1faa",
       "name": "tv",
