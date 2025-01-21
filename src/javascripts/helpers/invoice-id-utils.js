@@ -2,7 +2,7 @@
 const generateInvoiceId = () => {
   // Get current date components
   const now = new Date();
-  const year = now.getFullYear().toString().slice(-2); // Last 2 digits of year
+  const year = now.getFullYear().toString().slice(-2);
   const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Month (1-12)
 
   // Generate a random 4-digit number
@@ -11,7 +11,7 @@ const generateInvoiceId = () => {
     .padStart(4, '0');
 
   // Combine components: INV-YY-MM-XXXX
-  return `INV-${year}-${month}-${randomNum}`;
+  return `${year}${month}${randomNum}`;
 };
 
 // Function to update placeholder with new ID
