@@ -173,6 +173,7 @@ export function collectProductData() {
 
     if (name || rate || quantity) {
       products.push({
+        id: Date().now,
         name,
         rate,
         quantity,
