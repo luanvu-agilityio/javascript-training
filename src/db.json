@@ -10,15 +10,6 @@
       "favorite": false
     },
     {
-      "id": "INV-25-01-3030",
-      "name": "aaaa",
-      "email": "aaa@gmail.com",
-      "date": "2024-12-31",
-      "address": "1111 sassssssss",
-      "status": "Complete",
-      "favorite": false
-    },
-    {
       "id": "INV-25-01-2906",
       "name": "aaaaaaaa",
       "email": "aaaaaa@gmail.com",
@@ -26,95 +17,9 @@
       "address": "1122 sadasda",
       "status": "Complete",
       "favorite": false
-    },
-    {
-      "id": "INV-25-01-4328",
-      "name": "cccc",
-      "email": "sadas@gmail.com",
-      "date": "2025-01-02",
-      "address": "123 aaaaaaaa",
-      "status": "Complete",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-0925",
-      "name": "ssss",
-      "email": "sss",
-      "date": "2025-01-09",
-      "address": "2222222",
-      "status": "Complete",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-1050",
-      "name": "a",
-      "email": "aa",
-      "date": "2025-01-01",
-      "address": "aaaaaaaaaa",
-      "status": "Complete",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-4992",
-      "name": "aaaa",
-      "email": "aaaaa@gmail.com",
-      "date": "2024-12-30",
-      "address": "1111aaa",
-      "status": "Complete",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-8313",
-      "name": "aaaa",
-      "email": "aaaaa@gmail.com",
-      "date": "2024-12-31",
-      "address": "123 ssssss",
-      "status": "Cancel",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-6204",
-      "name": "Alison",
-      "email": "alison@gmail.com",
-      "date": "2024-12-30",
-      "address": "123 code",
-      "status": "Complete",
-      "favorite": false
     }
   ],
   "products": [
-    {
-      "id": "e847",
-      "name": "ccc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
-      "invoiceId": "INV-25-01-0925"
-    },
-    {
-      "id": "bba0",
-      "name": "cc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
-      "invoiceId": "INV-25-01-4992"
-    },
-    {
-      "id": "50dd",
-      "name": "rrr",
-      "rate": 22,
-      "quantity": 222,
-      "amount": 4884,
-      "invoiceId": "INV-25-01-4328"
-    },
-    {
-      "id": "51a5",
-      "name": "ccc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
-      "invoiceId": "INV-25-01-3030"
-    },
     {
       "id": "3464",
       "name": "ccc",
@@ -122,14 +27,6 @@
       "quantity": 222,
       "amount": 49284,
       "invoiceId": "INV-25-01-2906"
-    },
-    {
-      "id": "fbcd",
-      "name": "cc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
-      "invoiceId": "INV-25-01-8313"
     },
     {
       "id": "1faa",
@@ -146,14 +43,6 @@
       "quantity": 22,
       "amount": 484,
       "invoiceId": "INV-25-01-6999"
-    },
-    {
-      "id": "631b",
-      "name": "cc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
-      "invoiceId": "INV-25-01-6204"
     }
   ]
 }
