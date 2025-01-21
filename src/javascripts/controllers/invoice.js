@@ -133,15 +133,19 @@ class InvoiceController {
   }
 
   async loadInvoices() {
+    this.loading.show();
     try {
       this.invoices = await this.dataHandler.getInvoiceList();
       this.view.renderInvoiceList(this.invoices);
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'loading',
       });
+    } finally {
+      this.loading.hide();
     }
   }
 
@@ -418,7 +422,7 @@ class InvoiceController {
       formHandlers.resetForm();
       this.view.clearInvoicePreview();
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } finally {
       this.loading.hide();
       this.notification.show('Invoice created successfully', { type: 'success' });
@@ -437,7 +441,7 @@ class InvoiceController {
         this.notification.show('Invoice updated successfully', { type: 'success' });
         formHandlers.resetFormStates();
       }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } finally {
       this.loading.hide();
       this.notification.show('Invoice updated successfully', { type: 'success' });
