@@ -161,9 +161,12 @@ export function collectFormData() {
     return null;
   }
 
-  const idValue = isEditForm
-    ? inputs.id?.value
-    : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId();
+  const idValue = parseInt(
+    isEditForm
+      ? inputs.id?.value
+      : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId(),
+    10,
+  );
 
   return {
     id: idValue,
