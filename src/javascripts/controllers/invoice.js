@@ -28,7 +28,7 @@ class InvoiceController {
     this.initializeServices();
     this.initializeState();
     this.loading = new LoadingUtils();
-    this.userErrorMessage = new UserErrorMessage();
+    // this.userErrorMessage = new UserErrorMessage();
     this.init();
   }
 
@@ -133,19 +133,17 @@ class InvoiceController {
   }
 
   async loadInvoices() {
-    this.loading.show();
     try {
       this.invoices = await this.dataHandler.getInvoiceList();
       this.view.renderInvoiceList(this.invoices);
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
-      await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'loading',
-      });
-    } finally {
-      this.loading.hide();
+      this.notification.show('Failed to load invoices', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'loading',
+      // });
     }
   }
 
@@ -164,22 +162,22 @@ class InvoiceController {
    * @param {string} searchInput - the search term entered by user
    */
   handleSearch(searchInput) {
-    try {
-      if (!searchInput) {
-        this.view.renderInvoiceList(this.invoices);
-        return;
-      }
-
-      const formattedInput = searchInput.toLowerCase().trim();
-      const filteredInvoices = this.filterInvoices(formattedInput);
-      this.view.renderInvoiceList(filteredInvoices);
-      this.view.updateHeaderCheckbox();
-    } catch (error) {
-      this.errorHandler.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'search',
-      });
+    // try {
+    if (!searchInput) {
+      this.view.renderInvoiceList(this.invoices);
+      return;
     }
+
+    const formattedInput = searchInput.toLowerCase().trim();
+    const filteredInvoices = this.filterInvoices(formattedInput);
+    this.view.renderInvoiceList(filteredInvoices);
+    this.view.updateHeaderCheckbox();
+    // } catch (error) {
+    //   this.errorHandler.handleError(error, {
+    //     context: 'InvoiceController',
+    //     operation: 'search',
+    //   });
+    // }
   }
 
   filterInvoices(searchTerm) {
@@ -238,6 +236,10 @@ class InvoiceController {
     if (e.target.closest('.btn--edit')) {
       e.preventDefault();
       e.stopPropagation();
+      const content = document.querySelector('.content');
+      if (content) {
+        content.classList.remove('hidden');
+      }
       this.editInvoice(id);
       const popupContent = e.target.closest('.popup-content');
       if (popupContent) {
@@ -263,10 +265,12 @@ class InvoiceController {
       await this.createInvoiceWithProducts(formData, products);
       this.handleSuccessfulCreation(formData);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'creation',
-      });
+      this.notification.show('Failed to create invoice', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'creation',
+      // });
     }
   }
 
@@ -293,10 +297,12 @@ class InvoiceController {
 
       this.populateEditForm(invoice, products);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'editing',
-      });
+      this.notification.show('Failed to load invoice data', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'editing',
+      // });
     }
   }
 
@@ -342,10 +348,12 @@ class InvoiceController {
       await this.updateInvoiceWithProducts(formData, products);
       this.handleSuccessfulUpdate(formData, products);
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'updating',
-      });
+      this.notification.show('Failed to update invoice', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'updating',
+      // });
     }
   }
 
@@ -363,6 +371,7 @@ class InvoiceController {
       this.notification.show('Please add at least one product to the invoice', { type: 'warning' });
       return null;
     }
+
     const validation = this.validator.validateProducts(products);
     if (!validation.isValid) {
       const errorMessage = this.validator.formatValidationErrors({ products: validation.errors });
@@ -373,50 +382,43 @@ class InvoiceController {
   }
 
   async createInvoiceWithProducts(formData, products) {
-    const invoice = await this.dataHandler.createInvoiceTransaction(
-      {
-        ...formData,
-        favorite: false,
-      },
-      products,
-    );
-    return result.invoice;
-    // await Promise.all(
-    //   products.map((product) =>
-    //     this.dataHandler.addProduct({
-    //       ...product,
-    //       invoiceId: invoice.id,
-    //     }),
-    //   ),
-    // );
+    const invoice = await this.dataHandler.createInvoice({
+      ...formData,
+      favorite: false,
+    });
 
-    // return invoice;
+    await Promise.all(
+      products.map((product) =>
+        this.dataHandler.addProduct({
+          ...product,
+          invoiceId: invoice.id,
+        }),
+      ),
+    );
+
+    return invoice;
   }
 
   async updateInvoiceWithProducts(formData, products) {
-    const updatedInvoice = await this.dataHandler.updateInvoiceTransaction(
-      formData.id,
-      {
-        ...formData,
-        favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
-      },
-      products,
-    );
-    return result.invoice;
-    // const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
-    // await Promise.all(
-    //   existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
-    // );
-    // await Promise.all(
-    //   products.map((product) =>
-    //     this.dataHandler.addProduct({
-    //       ...product,
-    //       invoiceId: formData.id,
-    //     }),
-    //   ),
-    // );
+    const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
+      ...formData,
+      favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
+    });
 
-    // return updatedInvoice;
+    const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    await Promise.all(
+      existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+    );
+    await Promise.all(
+      products.map((product) =>
+        this.dataHandler.addProduct({
+          ...product,
+          invoiceId: formData.id,
+        }),
+      ),
+    );
+
+    return updatedInvoice;
   }
 
   async handleSuccessfulCreation(invoice) {
@@ -563,12 +565,14 @@ class InvoiceController {
       // Update view after any type of deletion
       this.view.renderInvoiceList(this.invoices);
       this.view.updateHeaderCheckbox();
-      this.view.closeActivePopup();
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'deletion',
-      });
+      console.error('Error deleting invoice(s):', error);
+      this.notification.show('Failed to delete invoice(s)', { type: 'error' });
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'deletion',
+      // });
     }
   }
 
@@ -618,10 +622,12 @@ class InvoiceController {
         this.view.clearInvoicePreview();
       }
     } catch (error) {
-      this.userErrorMessage.handleError(error, {
-        context: 'InvoiceController',
-        operation: 'preview-update',
-      });
+      console.error('Error updating preview:', error);
+
+      // this.userErrorMessage.handleError(error, {
+      //   context: 'InvoiceController',
+      //   operation: 'preview-update',
+      // });
     }
   }
 }
