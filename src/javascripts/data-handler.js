@@ -3,28 +3,6 @@ class DataHandler {
   constructor() {
     this.rootUrl = getApiUrl();
   }
-
-  async retryOperation(operation, maxRetries = 3, delay = 1000) {
-    let lastError;
-
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-        return await operation();
-      } catch (error) {
-        lastError = error;
-        console.log(`Attempt ${attempt} failed. Retrying in ${delay}ms...`);
-
-        if (attempt < maxRetries) {
-          await new Promise((resolve) => setTimeout(resolve, delay));
-          // Exponential backoff
-          delay *= 2;
-        }
-      }
-    }
-
-    throw lastError;
-  }
-
   /**
    * Invoice methods
    */
@@ -85,7 +63,7 @@ class DataHandler {
   }
 
   async updateInvoice(id, invoice) {
-    return this.retryOperation(async () => {
+    try {
       const response = await fetch(`${this.rootUrl}/invoices/${id}`, {
         method: 'PUT',
         headers: {
@@ -93,10 +71,12 @@ class DataHandler {
         },
         body: JSON.stringify(invoice),
       });
-
-      if (!response.ok) throw new Error('Failed to update invoice');
-      return response.json();
-    });
+      if (!response.ok) throw new Error('Fail to update invoice');
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating invoice', error);
+      throw error;
+    }
   }
 
   async deleteInvoice(id) {
@@ -138,7 +118,7 @@ class DataHandler {
   }
 
   async addProduct(product) {
-    return this.retryOperation(async () => {
+    try {
       const response = await fetch(`${this.rootUrl}/products`, {
         method: 'POST',
         headers: {
@@ -146,10 +126,12 @@ class DataHandler {
         },
         body: JSON.stringify(product),
       });
-
-      if (!response.ok) throw new Error('Failed to add product');
-      return response.json();
-    });
+      if (!response.ok) throw new Error('Fail to add product');
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding product', error);
+      throw error;
+    }
   }
 
   async updateProduct(id, product) {
@@ -170,14 +152,17 @@ class DataHandler {
   }
 
   async deleteProduct(id) {
-    return this.retryOperation(async () => {
+    try {
       const response = await fetch(`${this.rootUrl}/products/${id}`, {
         method: 'DELETE',
       });
-
-      if (!response.ok) throw new Error('Failed to delete product');
-      return response.json();
-    });
+      if (!response.ok) throw new Error('fail to delete product');
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting product', error);
+      throw error;
+    }
   }
 }
+
 export default DataHandler;

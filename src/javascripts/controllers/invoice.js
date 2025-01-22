@@ -403,47 +403,25 @@ class InvoiceController {
   }
 
   async updateInvoiceWithProducts(formData, products) {
-    try {
-      const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
+      ...formData,
+      favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
+    });
 
-      const createdProducts = await Promise.all(
-        products.map((product) =>
-          this.dataHandler.addProduct({
-            ...product,
-            invoiceId: formData.id,
-          }),
-        ),
-      );
+    const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    await Promise.all(
+      existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+    );
+    await Promise.all(
+      products.map((product) =>
+        this.dataHandler.addProduct({
+          ...product,
+          invoiceId: formData.id,
+        }),
+      ),
+    );
 
-      const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
-        ...formData,
-        favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
-      });
-
-      if (createdProducts.length > 0 && updatedInvoice) {
-        await Promise.all(
-          existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
-        );
-      }
-
-      return {
-        ...updatedInvoice,
-        products: createdProducts,
-      };
-    } catch (error) {
-      console.error('Error in updateInvoiceWithProducts:', error);
-      if (error && createdProducts?.length > 0) {
-        try {
-          await Promise.all(
-            createdProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
-          );
-        } catch (cleanupError) {
-          console.error('Error during cleanup:', cleanupError);
-        }
-      }
-
-      throw error;
-    }
+    return updatedInvoice;
   }
 
   async handleSuccessfulCreation(invoice) {
