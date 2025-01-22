@@ -22,4 +22,15 @@ const updateInvoiceIdPlaceholder = () => {
   }
 };
 
-export { generateInvoiceId, updateInvoiceIdPlaceholder };
+const generateProductId = () => {
+  // Generate a random string of 8 characters
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const idLength = 8;
+  let id = 'PRD-';
+  for (let i = 0; i < idLength; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+};
+
+export { generateInvoiceId, updateInvoiceIdPlaceholder, generateProductId };

@@ -1,5 +1,6 @@
 import Templates from '../templates/templates.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
+import { generateProductId } from '../helpers/invoice-id-utils.js';
 
 /**
  * Sets up event listeners for product list actions.
@@ -175,6 +176,7 @@ export function collectProductData() {
 
       if (name || rate || quantity) {
         products.push({
+          id: generateProductId(),
           name,
           rate,
           quantity,
