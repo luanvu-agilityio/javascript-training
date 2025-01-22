@@ -266,8 +266,8 @@ class InvoiceController {
     if (!products) return;
 
     try {
-      const createdInvoice = await this.dataHandler.createInvoiceWithProducts(formData, products);
-      this.handleSuccessfulCreation(createdInvoice);
+      await this.createInvoiceWithProducts(formData, products);
+      this.handleSuccessfulCreation(formData);
     } catch (error) {
       // this.notification.show('Failed to create invoice', { type: 'error' });
 
@@ -285,15 +285,21 @@ class InvoiceController {
    */
   async editInvoice(id) {
     try {
-      const invoiceData = await this.dataHandler.getInvoiceWithProducts(id);
-      if (!invoiceData) {
+      const [invoice, products] = await Promise.all([
+        this.dataHandler.getInvoiceById(id),
+        this.dataHandler.getProductsByInvoiceId(id),
+      ]);
+
+      if (!invoice) {
         this.notification.show('Invoice not found', { type: 'error' });
         return;
       }
 
+      // show edit form and populate data
       formHandlers.showEditForm();
-      formHandlers.setFormData(invoiceData, this.discountPercentage);
-      this.populateEditForm(invoiceData, invoiceData.products);
+      formHandlers.setFormData(invoice, this.discountPercentage);
+
+      this.populateEditForm(invoice, products);
     } catch (error) {
       // this.notification.show('Failed to load invoice data', { type: 'error' });
 
@@ -343,12 +349,8 @@ class InvoiceController {
     if (!products) return;
 
     try {
-      const updatedInvoice = await this.dataHandler.updateInvoiceWithProducts(
-        formData.id,
-        formData,
-        products,
-      );
-      this.handleSuccessfulUpdate(updatedInvoice);
+      await this.updateInvoiceWithProducts(formData, products);
+      this.handleSuccessfulUpdate(formData, products);
     } catch (error) {
       // this.notification.show('Failed to update invoice', { type: 'error' });
       this.userErrorMessage.handleError(error, {
@@ -503,47 +505,71 @@ class InvoiceController {
    */
   async handleInvoiceDeletion(identifier) {
     try {
+      // Handle both multiple deletion and single deletion cases
       if (Array.isArray(identifier)) {
+        // Multiple deletion
         if (identifier.length === 0) {
           this.notification.show('Please select at least one invoice to delete', {
             type: 'warning',
           });
           return;
         }
-        const idsToDelete = identifier.map(
-          (checkbox) =>
-            checkbox.closest('.table__row').querySelector('[data-label="Invoice Id"]').textContent,
-        );
+        const idsToDelete = identifier.map((checkbox) => {
+          const row = checkbox.closest('.table__row');
+          return row.querySelector('[data-label="Invoice Id"]').textContent;
+        });
 
         const confirmed = await this.confirmDeletion(
           identifier.length,
           identifier.length === 1 ? idsToDelete[0] : null,
         );
+
         if (confirmed) {
-          await this.dataHandler.deleteMultipleInvoicesWithProducts(idsToDelete);
+          // Delete all products for these invoices first
+          for (const invoiceId of idsToDelete) {
+            const products = await this.dataHandler.getProductsByInvoiceId(invoiceId);
+            await Promise.all(
+              products.map((product) => this.dataHandler.deleteProduct(product.id)),
+            );
+          }
+
+          // Delete all invoices
+          await this.dataHandler.deleteMultipleInvoices(idsToDelete);
+
+          // Update local state
           this.invoices = this.invoices.filter((invoice) => !idsToDelete.includes(invoice.id));
           this.headerCheckbox.checked = false;
           this.notification.show('Invoices deleted successfully', { type: 'success' });
         }
       } else {
+        // Single deletion
         const deleteBtn = identifier.target.closest('.btn--delete');
+
         if (!deleteBtn) return;
+        const row = deleteBtn.closest('.table__row');
+        const idCell = row.querySelector('[data-label="Invoice Id"]');
+        const invoiceId = idCell.textContent;
 
-        const invoiceId = deleteBtn
-          .closest('.table__row')
-          .querySelector('[data-label="Invoice Id"]').textContent;
         const confirmed = await this.confirmDeletion(1, invoiceId);
-
         if (confirmed) {
-          await this.dataHandler.deleteInvoiceWithProducts(invoiceId);
+          // Delete all products for this invoice first
+          const products = await this.dataHandler.getProductsByInvoiceId(invoiceId);
+          await Promise.all(products.map((product) => this.dataHandler.deleteProduct(product.id)));
+
+          // Delete the invoice
+          await this.dataHandler.deleteInvoice(invoiceId);
+
+          // Update local state
           this.invoices = this.invoices.filter((invoice) => invoice.id !== invoiceId);
           this.notification.show('Invoice deleted successfully', { type: 'success' });
         }
       }
 
+      // Update view after any type of deletion
       this.view.renderInvoiceList(this.invoices);
       this.view.updateHeaderCheckbox();
     } catch (error) {
+      console.error('Error deleting invoice(s):', error);
       // this.notification.show('Failed to delete invoice(s)', { type: 'error' });
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',

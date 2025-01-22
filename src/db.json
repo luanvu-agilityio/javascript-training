@@ -24,8 +24,7 @@
       "email": "22222@gmail.com",
       "date": "2025-01-01",
       "address": "123 ddddddd",
-      "status": "Pending",
-      "favorite": false
+      "status": "Pending"
     }
   ],
   "products": [
@@ -54,11 +53,19 @@
       "invoiceId": "INV-25-01-3034"
     },
     {
-      "id": "9c0a",
-      "name": "ccc",
-      "rate": 22,
-      "quantity": 22,
-      "amount": 484,
+      "id": "ed16",
+      "name": "ddd",
+      "rate": 33,
+      "quantity": 33,
+      "amount": 1089,
+      "invoiceId": "INV-25-01-4937"
+    },
+    {
+      "id": "266b",
+      "name": "eeee",
+      "rate": 11,
+      "quantity": 11,
+      "amount": 121,
       "invoiceId": "INV-25-01-4937"
     }
   ]
