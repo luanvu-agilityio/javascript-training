@@ -28,7 +28,7 @@ class InvoiceController {
     this.initializeServices();
     this.initializeState();
     this.loading = new LoadingUtils();
-    // this.userErrorMessage = new UserErrorMessage();
+    this.userErrorMessage = new UserErrorMessage();
     this.init();
   }
 
