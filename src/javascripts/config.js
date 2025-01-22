@@ -3,7 +3,7 @@ const config = {
     apiUrl: 'http://localhost:3000',
   },
   production: {
-    apiUrl: 'https://wons-api-vercel.vercel.app',
+    apiUrl: 'https://wons-api.onrender.com/api',
   },
 };
 
