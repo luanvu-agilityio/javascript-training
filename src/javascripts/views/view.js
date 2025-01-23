@@ -218,10 +218,15 @@ class InvoiceView {
     });
   }
 
-  setupPrintPreview() {
+  setupPrintAndDownLoadPreview() {
     const printIcon = document.querySelector('.preview__main__actions a:nth-child(2) img');
     if (printIcon) {
       printIcon.addEventListener('click', this.printInvoicePreview.bind(this));
+    }
+
+    const downloadIcon = document.querySelector('.preview__main__actions a:first-child img');
+    if (downloadIcon) {
+      downloadIcon.addEventListener('click', this.downloadInvoicePreview.bind(this));
     }
   }
 
@@ -233,73 +238,73 @@ class InvoiceView {
     const printStyles = `
     <style>
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-  .preview {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+    .preview {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-  .recipient__info, .preview__invoice-title {
-    text-transform: upperCase;
-    font-weight: 700;
-  }
+    .recipient__info, .preview__invoice-title {
+      text-transform: upperCase;
+      font-weight: 700;
+    }
 
-  .preview__invoice-header,.invoice-number {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-  }
+    .preview__invoice-header,.invoice-number {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-  .preview__customer,
-  .preview__invoice-details{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  } 
+    .preview__customer,
+    .preview__invoice-details{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    } 
 
-  .preview-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
+    .preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-  .preview-table th,
-  .preview-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
+    .preview-table th,
+    .preview-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
 
-  .preview-summary {
-    text-align: center;
-    margin-top: 20px;
-  }
+    .preview-summary {
+      text-align: center;
+      margin-top: 20px;
+    }
   
-  .preview-summary__row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 50px;
-  }
+    .preview-summary__row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 50px;
+    }
 
-  .preview-footer {
-    margin-top: 30px;
-    font-size: 0.9em;
-    color: #666;
-  }
+    .preview-footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #666;
+    }
     
-  .preview-footer__company {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid #ddd;
-  }
+    .preview-footer__company {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #ddd;
+    }
     </style>
     `;
     //Remove unnecessary elements
@@ -316,6 +321,35 @@ class InvoiceView {
 
     printWindow.print();
     printWindow.close();
+  }
+
+  downloadInvoicePreview() {
+    const previewSection = document.querySelector('.preview');
+    const clonedPreview = previewSection.cloneNode(true);
+
+    //Remove unnecessary elements
+    const actions = clonedPreview.querySelectorAll('.preview__main__actions');
+    actions.forEach((element) => element.remove());
+
+    const invoiceHTML = clonedPreview.outerHTML;
+    const invoiceName = `invoice_${this.getInvoiceId()}.pdf`;
+    this.downloadAsPDF(invoiceHTML, invoiceName);
+  }
+
+  downloadAsPDF(html, fileName) {
+    const element = document.createElement('a');
+    element.setAttribute('href', `data:application/pdf;charset=utf-8,${encodeURIComponent(html)}`);
+    element.setAttribute('download', fileName);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+    document.body.removeChild(element);
+  }
+
+  getInvoiceId() {
+    const idCell = document.querySelector('.preview__invoice-label--id span');
+    return idCell ? idCell.textContent : 'unknown';
   }
 }
 export default InvoiceView;
