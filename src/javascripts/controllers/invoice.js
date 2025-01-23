@@ -604,6 +604,7 @@ class InvoiceController {
           formData.id,
           formData.name,
           formData.email,
+          formData.phoneNum,
           formData.date,
           formData.address,
           formData.status,

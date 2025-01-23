@@ -166,7 +166,8 @@ class InvoiceView {
       <span>${invoice.id}</span>`;
     this.previewSection.querySelector('.preview-company__email .email-address').innerHTML =
       invoice.email;
-
+    this.previewSection.querySelector('.preview-company__phone .phone-number').innerHTML =
+      invoice.phoneNum;
     this.previewSection.querySelector('.preview__invoice .recipient__name').innerHTML =
       invoice.name;
     this.previewSection.querySelector('.preview__invoice .recipient__address').innerHTML =

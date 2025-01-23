@@ -42,13 +42,7 @@ const Templates = {
         <label class="form__group-label">Email</label>
         <input class="form__group-input" type="email" placeholder="example@gmail.com" />
       </div>
-      <div class="form__group">
-        <label class="form__group-label">Address</label>
-        <div class="form__group-address">
-          <input class="form__group-input" type="text" placeholder="Street" />
-          <img class="form__group-address-icon" src="./assets/images/icons/create-invoice-modal-icons/location-icon.svg" alt="location icon" />
-        </div>
-      </div>
+
       <div class="form__group">
         <label for="status" class="form__group-label">Status</label>
         <select id="status" name="status" class="form__group-input form__group-input--select">
@@ -56,6 +50,17 @@ const Templates = {
           <option value="Complete">Completed</option>
           <option value="Cancel">Cancel</option>
         </select>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label">Phone number</label>
+        <input class="form__group-input" type="tel" placeholder="xxx-xxx-xxxx" />
+      </div>
+      <div class="form__group">
+        <label class="form__group-label">Address</label>
+        <div class="form__group-address">
+          <input class="form__group-input" type="text" placeholder="Street" />
+          <img class="form__group-address-icon" src="./assets/images/icons/create-invoice-modal-icons/location-icon.svg" alt="location icon" />
+        </div>
       </div>
     </div>
 
@@ -148,7 +153,7 @@ const Templates = {
           <div class="preview-company__info">
             <div class="preview-company__email">&#64; <span class="email-address"> </span></div>
             <div class="preview-company__phone">
-              m <span class="phone-number"> +386 714 505 8385</span>
+              m <span class="phone-number"> </span>
             </div>
           </div>
         </div>

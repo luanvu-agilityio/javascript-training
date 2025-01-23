@@ -139,13 +139,21 @@ export function collectFormData() {
       id: activeForm.querySelector('.form__group-input, input[name="invoice-id"]'),
       name: activeForm.querySelector('input[placeholder="Alison G."]'),
       email: activeForm.querySelector('input[type="email"]'),
+      phoneNum: activeForm.querySelector('input[type="tel"]'),
       date: activeForm.querySelector('input[type="date"]'),
       address: activeForm.querySelector('input[placeholder="Street"]'),
       status: activeForm.querySelector('#status'),
     };
 
     //Validate all required input
-    if (!inputs.name || !inputs.email || !inputs.date || !inputs.address || !inputs.status) {
+    if (
+      !inputs.name ||
+      !inputs.email ||
+      !inputs.date ||
+      !inputs.address ||
+      !inputs.status ||
+      !inputs.phoneNum
+    ) {
       new NotificationUtils().alert('Form is missing required fields', { type: 'error' });
       return null;
     }
@@ -158,6 +166,7 @@ export function collectFormData() {
       id: idValue,
       name: inputs.name.value.trim(),
       email: inputs.email.value.trim(),
+      phoneNum: inputs.phoneNum.value.trim(),
       date: inputs.date.value,
       address: inputs.address.value.trim(),
       status: inputs.status.value,
@@ -183,6 +192,7 @@ export function setFormData(invoice, discountPercentage) {
       'input[placeholder="#876370"]': invoice.id,
       'input[placeholder="Alison G."]': invoice.name,
       'input[type="email"]': invoice.email,
+      'input[type="tel"]': invoice.phoneNum,
       'input[type="date"]': invoice.date,
       'input[placeholder="Street"]': invoice.address,
       '#status': invoice.status,

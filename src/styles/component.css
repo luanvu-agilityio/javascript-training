@@ -233,7 +233,7 @@
   justify-content: space-between;
 }
 
-.form__group:nth-child(5) {
+.form__group:nth-child(7) {
   grid-column: 1 / -1;
 }
 
@@ -259,7 +259,7 @@
   cursor: not-allowed;
 }
 
-.form__group:nth-child(5) .form__group-input {
+.form__group:nth-child(7) .form__group-input {
   flex: 1;
 }
 
@@ -419,7 +419,7 @@
   padding: 1.25rem;
   background-color: var(--primary-bg-color);
   color: var(--deep-blue-color);
-  border: 1px solid rgba(58, 54, 219, 0.1);
+  border: 0.1rem solid rgba(58, 54, 219, 0.1);
 }
 
 .form__action-buttons--button-create,
@@ -471,7 +471,7 @@
   right: -200%;
   width: 18rem;
 
-  background: white;
+  background: var(--white-color);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 16px;
