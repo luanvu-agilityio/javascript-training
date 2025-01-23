@@ -404,14 +404,13 @@ class InvoiceController {
     await Promise.all(
       existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
     );
-    await Promise.all(
-      products.map((product) =>
-        this.dataHandler.addProduct({
-          ...product,
-          invoiceId: formData.id,
-        }),
-      ),
-    );
+
+    for (const product of products) {
+      await this.dataHandler.addProduct({
+        ...product,
+        invoiceId: formData.id,
+      });
+    }
 
     return updatedInvoice;
   }
