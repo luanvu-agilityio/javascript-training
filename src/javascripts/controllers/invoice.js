@@ -49,6 +49,7 @@ class InvoiceController {
     this.loadInvoices();
     this.setupSearchInvoice();
     this.setupEventListeners();
+    this.view.setupPrintPreview();
   }
 
   /**

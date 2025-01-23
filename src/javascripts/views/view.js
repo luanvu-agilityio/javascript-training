@@ -217,5 +217,105 @@ class InvoiceView {
       onFavoriteToggle(invoiceId, !isActive);
     });
   }
+
+  setupPrintPreview() {
+    const printIcon = document.querySelector('.preview__main__actions a:nth-child(2) img');
+    if (printIcon) {
+      printIcon.addEventListener('click', this.printInvoicePreview.bind(this));
+    }
+  }
+
+  printInvoicePreview() {
+    const printWindow = window.open('', '', 'width=800, heigh=800');
+    const previewSection = document.querySelector('.preview');
+    const clonedPreview = previewSection.cloneNode(true);
+
+    const printStyles = `
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .preview {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .recipient__info, .preview__invoice-title {
+    text-transform: upperCase;
+    font-weight: 700;
+  }
+
+  .preview__invoice-header,.invoice-number {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .preview__customer,
+  .preview__invoice-details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  } 
+
+  .preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .preview-table th,
+  .preview-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .preview-summary {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .preview-summary__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+  }
+
+  .preview-footer {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #666;
+  }
+    
+  .preview-footer__company {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+  }
+    </style>
+    `;
+    //Remove unnecessary elements
+    const actions = clonedPreview.querySelectorAll('.preview__main__actions');
+    actions.forEach((element) => element.remove());
+
+    printWindow.document.write(
+      '<html><head>' + printStyles + '<title>Invoice Preview</title></head>',
+    );
+    printWindow.document.write('<body>');
+    printWindow.document.write(clonedPreview.outerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+
+    printWindow.print();
+    printWindow.close();
+  }
 }
 export default InvoiceView;
