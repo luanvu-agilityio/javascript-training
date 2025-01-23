@@ -41,9 +41,9 @@ class InvoiceView {
   /**
    * Opens a popup and its backdrop
    * @param {HTMLElement} popup - The popup element to open
-   * @param {HTMLElement} backdrop - The backdrop element associated with the popup
+   *
    */
-  openPopup(popup, backdrop) {
+  openPopup(popup) {
     // First close any existing popup
     this.closeActivePopup();
 

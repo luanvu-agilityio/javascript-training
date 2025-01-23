@@ -37,7 +37,6 @@ class InvoiceController {
     this.view = new InvoiceView();
     this.validator = new ValidationUtils();
     this.notification = new NotificationUtils();
-
     this.dataHandler = new DataHandler();
   }
 
@@ -140,8 +139,6 @@ class InvoiceController {
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
-      // this.notification.show('Failed to load invoices', { type: 'error' });
-
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'loading',
@@ -269,8 +266,6 @@ class InvoiceController {
       await this.createInvoiceWithProducts(formData, products);
       this.handleSuccessfulCreation(formData);
     } catch (error) {
-      // this.notification.show('Failed to create invoice', { type: 'error' });
-
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'creation',
@@ -301,8 +296,6 @@ class InvoiceController {
 
       this.populateEditForm(invoice, products);
     } catch (error) {
-      // this.notification.show('Failed to load invoice data', { type: 'error' });
-
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'editing',
@@ -352,7 +345,6 @@ class InvoiceController {
       await this.updateInvoiceWithProducts(formData, products);
       this.handleSuccessfulUpdate(formData, products);
     } catch (error) {
-      // this.notification.show('Failed to update invoice', { type: 'error' });
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'updating',
@@ -403,47 +395,25 @@ class InvoiceController {
   }
 
   async updateInvoiceWithProducts(formData, products) {
-    try {
-      const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
+      ...formData,
+      favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
+    });
 
-      const createdProducts = await Promise.all(
-        products.map((product) =>
-          this.dataHandler.addProduct({
-            ...product,
-            invoiceId: formData.id,
-          }),
-        ),
-      );
+    const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    await Promise.all(
+      existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+    );
+    await Promise.all(
+      products.map((product) =>
+        this.dataHandler.addProduct({
+          ...product,
+          invoiceId: formData.id,
+        }),
+      ),
+    );
 
-      const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
-        ...formData,
-        favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
-      });
-
-      if (createdProducts.length > 0 && updatedInvoice) {
-        await Promise.all(
-          existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
-        );
-      }
-
-      return {
-        ...updatedInvoice,
-        products: createdProducts,
-      };
-    } catch (error) {
-      console.error('Error in updateInvoiceWithProducts:', error);
-      if (error && createdProducts?.length > 0) {
-        try {
-          await Promise.all(
-            createdProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
-          );
-        } catch (cleanupError) {
-          console.error('Error during cleanup:', cleanupError);
-        }
-      }
-
-      throw error;
-    }
+    return updatedInvoice;
   }
 
   async handleSuccessfulCreation(invoice) {
@@ -592,7 +562,6 @@ class InvoiceController {
       this.view.updateHeaderCheckbox();
     } catch (error) {
       console.error('Error deleting invoice(s):', error);
-      // this.notification.show('Failed to delete invoice(s)', { type: 'error' });
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'deletion',

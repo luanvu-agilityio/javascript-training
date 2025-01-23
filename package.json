@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "source": "src/index.html",
   "script": {
-    "start": "node api/index.js",
-    "json-server": "json-server --watch db.json --port $PORT"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "json-server": "json-server --watch ../db.json"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
