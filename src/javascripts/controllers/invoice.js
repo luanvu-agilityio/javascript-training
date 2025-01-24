@@ -5,6 +5,7 @@ import ValidationUtils from '../helpers/validation-utils.js';
 import NotificationUtils from '../helpers/notification-utils.js';
 import DataHandler from '../data-handler.js';
 import LoadingUtils from '../helpers/loading-utils.js';
+import InvoiceExport from '../helpers/invoice-export.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
 import * as formHandlers from './form-handlers.js';
 import * as productHandlers from './product-handlers.js';
@@ -27,8 +28,6 @@ class InvoiceController {
   constructor() {
     this.initializeServices();
     this.initializeState();
-    this.loading = new LoadingUtils();
-    this.userErrorMessage = new UserErrorMessage();
     this.init();
   }
 
@@ -38,6 +37,8 @@ class InvoiceController {
     this.validator = new ValidationUtils();
     this.notification = new NotificationUtils();
     this.dataHandler = new DataHandler();
+    this.loading = new LoadingUtils();
+    this.userErrorMessage = new UserErrorMessage();
   }
 
   initializeState() {
@@ -61,6 +62,7 @@ class InvoiceController {
     this.setupProductListeners();
     this.setupDeletionListeners();
     this.setupSidebarInvoiceLink();
+    this.setupExportInvoice();
     this.view.setupFavoriteHandler();
   }
 
@@ -623,6 +625,24 @@ class InvoiceController {
         operation: 'preview-update',
       });
     }
+  }
+
+  setupExportInvoice() {
+    document.querySelector('.btn--export').addEventListener('click', async () => {
+      const checkedRows = document.querySelectorAll('.table__checkbox:checked');
+      const selectedInvoiceIds = Array.from(checkedRows).map((checkbox) => {
+        const row = checkbox.closest('.table__row');
+        return row.querySelector('[data-label="Invoice Id"]').textContent;
+      });
+      const selectedInvoices = await Promise.all(
+        selectedInvoiceIds.map(async (id) => {
+          const invoice = await this.dataHandler.getInvoiceById(id);
+          const products = await this.dataHandler.getProductsByInvoiceId(id);
+          return { ...invoice, products };
+        }),
+      );
+      InvoiceExport.exportToExcel(selectedInvoices);
+    });
   }
 }
 export default InvoiceController;

@@ -16,5 +16,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "parcel": "^2.13.3",
     "prettier": "^3.4.2"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

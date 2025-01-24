@@ -223,11 +223,6 @@ class InvoiceView {
     if (printIcon) {
       printIcon.addEventListener('click', this.printInvoicePreview.bind(this));
     }
-
-    const downloadIcon = document.querySelector('.preview__main__actions a:first-child img');
-    if (downloadIcon) {
-      downloadIcon.addEventListener('click', this.downloadInvoicePreview.bind(this));
-    }
   }
 
   printInvoicePreview() {
@@ -321,35 +316,6 @@ class InvoiceView {
 
     printWindow.print();
     printWindow.close();
-  }
-
-  downloadInvoicePreview() {
-    const previewSection = document.querySelector('.preview');
-    const clonedPreview = previewSection.cloneNode(true);
-
-    //Remove unnecessary elements
-    const actions = clonedPreview.querySelectorAll('.preview__main__actions');
-    actions.forEach((element) => element.remove());
-
-    const invoiceHTML = clonedPreview.outerHTML;
-    const invoiceName = `invoice_${this.getInvoiceId()}.pdf`;
-    this.downloadAsPDF(invoiceHTML, invoiceName);
-  }
-
-  downloadAsPDF(html, fileName) {
-    const element = document.createElement('a');
-    element.setAttribute('href', `data:application/pdf;charset=utf-8,${encodeURIComponent(html)}`);
-    element.setAttribute('download', fileName);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-    document.body.removeChild(element);
-  }
-
-  getInvoiceId() {
-    const idCell = document.querySelector('.preview__invoice-label--id span');
-    return idCell ? idCell.textContent : 'unknown';
   }
 }
 export default InvoiceView;
