@@ -1,5 +1,6 @@
 import Templates from '../templates/templates.js';
 import { updateInvoiceIdPlaceholder } from '../helpers/invoice-id-utils.js';
+import { setCustomerLogo } from '../helpers/customer-logo-handler.js';
 
 /**
  * This class handles the rendering of invoices in the view, including the invoice list and invoice preview.
@@ -94,6 +95,7 @@ class InvoiceView {
       }
     });
   }
+
   /**
    * Renders the create and edit forms using templates.
    */
@@ -162,6 +164,8 @@ class InvoiceView {
       this.clearInvoicePreview();
       return;
     }
+    const logoElement = this.previewSection.querySelector('.preview__customer-logo img');
+    setCustomerLogo(invoice.name, logoElement);
     this.previewSection.querySelector('.preview__invoice-label--id').innerHTML = `Invoice ID: <br/>
       <span>${invoice.id}</span>`;
     this.previewSection.querySelector('.preview-company__email .email-address').innerHTML =

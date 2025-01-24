@@ -52,8 +52,41 @@ export default class InvoiceExport {
     // Create workbook
     const workbook = XLSX.utils.book_new();
     const invoiceSheet = XLSX.utils.json_to_sheet(exportData);
+    // Add title to invoice sheet
+    invoiceSheet['A1'] = { v: 'Invoice Summary', t: 's' };
+    invoiceSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 11 } }];
+
+    // Define column widths
+    invoiceSheet['!cols'] = [
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 25 },
+      { wch: 12 },
+      { wch: 10 },
+      { wch: 12 },
+      { wch: 10 },
+      { wch: 12 },
+      { wch: 15 },
+    ];
+
     const productSheet = XLSX.utils.json_to_sheet(productData);
 
+    // Add title to product sheet
+    productSheet['A1'] = { v: 'Product Details', t: 's' };
+    productSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
+
+    // Define column widths for product sheet
+    productSheet['!cols'] = [
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 10 },
+      { wch: 10 },
+      { wch: 20 },
+    ];
     // Add sheets to workbook
     XLSX.utils.book_append_sheet(workbook, invoiceSheet, 'Invoices');
     XLSX.utils.book_append_sheet(workbook, productSheet, 'Products');

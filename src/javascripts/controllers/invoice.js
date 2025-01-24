@@ -83,6 +83,7 @@ class InvoiceController {
     this.view.renderForms();
     //add listener for create form button to update id
     document.querySelector('.btn--primary').addEventListener('click', () => {
+      this.view.clearInvoicePreview();
       formHandlers.showCreateForm();
       updateInvoiceIdPlaceholder();
 
