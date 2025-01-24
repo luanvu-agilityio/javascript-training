@@ -1,4 +1,22 @@
+import avatarImages from '../helpers/avatar-image.js';
 const Templates = {
+  avatarPopupTemplate: `
+  <div class="avatar-popup">
+    <div class="avatar-popup__close">×</div>
+    <div class="avatar-popup__grid">
+      ${avatarImages
+        .map(
+          (img, index) => `
+        <div class="avatar-popup__item" data-index="${index}">
+          <img src="${img}" alt="Avatar ${index + 1}" class="avatar-popup__image">
+        </div>
+      `,
+        )
+        .join('')}
+    </div>
+  </div>
+`,
+
   genericForm: (type) => `
   <div class="form--${type} ${type === 'edit' ? 'hidden' : ''}">
     <div class="form__header">
@@ -10,6 +28,7 @@ const Templates = {
 
     <div class="form__camera">
       <img class="form__camera-icon" src="./assets/images/icons/create-invoice-modal-icons/camera-icon.svg" alt="picture icon" />
+      <input type="hidden" class="selected-avatar" name="avatar" value="" />
     </div>
 
     <div class="form-grid">
@@ -244,7 +263,7 @@ const Templates = {
   <td class="table__cell" data-label="Invoice Id">{{id}}</td>
   <td class="table__cell" data-label="Name">
     <div class="table__user">
-      <img class="table__user-avatar" src="./assets/images/recipient-image.png" alt="avatar" />
+      <img class="table__user-avatar" src="{{avatarSrc}}" alt="avatar" />
       <span class="table__user-name">{{name}}</span>
     </div>
   </td>

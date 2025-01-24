@@ -2,6 +2,7 @@ import NotificationUtils from '../helpers/notification-utils.js';
 import ValidationUtils from '../helpers/validation-utils.js';
 import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
+import Templates from '../templates/templates.js';
 /**
  * Setup event listener for any form related actions
  * @param {Function} onDiscountChange - callback function to handle discount input changes
@@ -12,6 +13,7 @@ export function setupFormEventListeners(onDiscountChange) {
     setupFormCloseButton();
     setupCreateFormButton();
     setupDiscountInputHandler(onDiscountChange);
+    setupAvatarSelection();
   } catch (error) {
     userErrorMessage.handleError(error, {
       context: 'FormHandlers',
@@ -136,25 +138,27 @@ export function collectFormData() {
 
     // Get all form inputs
     const inputs = {
-      id: activeForm.querySelector('.form__group-input, input[name="invoice-id"]'),
+      id: activeForm.querySelector(
+        '.form__group-input[name="invoice-id"], input[name="invoice-id"]',
+      ),
       name: activeForm.querySelector('input[placeholder="Alison G."]'),
       email: activeForm.querySelector('input[type="email"]'),
       phoneNum: activeForm.querySelector('input[type="tel"]'),
       date: activeForm.querySelector('input[type="date"]'),
       address: activeForm.querySelector('input[placeholder="Street"]'),
       status: activeForm.querySelector('#status'),
+      avatar: activeForm.querySelector('.selected-avatar'),
     };
 
     //Validate all required input
-    if (
-      !inputs.name ||
-      !inputs.email ||
-      !inputs.date ||
-      !inputs.address ||
-      !inputs.status ||
-      !inputs.phoneNum
-    ) {
-      new NotificationUtils().alert('Form is missing required fields', { type: 'error' });
+    const requiredInputs = ['name', 'email', 'date', 'address', 'status', 'phoneNum'];
+    const missingInputs = requiredInputs.filter((key) => !inputs[key]);
+
+    if (missingInputs.length > 0) {
+      const notification = new NotificationUtils();
+      notification.alert(`Form is missing required fields: ${missingInputs.join(', ')}`, {
+        type: 'error',
+      });
       return null;
     }
 
@@ -162,7 +166,7 @@ export function collectFormData() {
       ? inputs.id?.value
       : inputs.id?.value || inputs.id?.placeholder || generateInvoiceId();
 
-    return {
+    const formData = {
       id: idValue,
       name: inputs.name.value.trim(),
       email: inputs.email.value.trim(),
@@ -170,7 +174,10 @@ export function collectFormData() {
       date: inputs.date.value,
       address: inputs.address.value.trim(),
       status: inputs.status.value,
+      avatarSrc: inputs.avatar?.value || './assets/images/recipient-image.png',
     };
+
+    return formData;
   } catch {
     userErrorMessage.handleError(error, {
       context: 'FormHandlers',
@@ -230,4 +237,44 @@ export function validateFormData(data) {
     return false;
   }
   return true;
+}
+
+export function setupAvatarSelection() {
+  const cameraTriggers = document.querySelectorAll('.form__camera');
+
+  cameraTriggers.forEach((camera) => {
+    camera.addEventListener('click', () => {
+      // Create and append avatar popup
+      const popupContainer = document.createElement('div');
+      popupContainer.innerHTML = Templates.avatarPopupTemplate;
+      document.body.appendChild(popupContainer.firstElementChild);
+
+      const avatarPopup = document.querySelector('.avatar-popup');
+      const closeButton = avatarPopup.querySelector('.avatar-popup__close');
+
+      // Handle avatar selection
+      avatarPopup.addEventListener('click', (e) => {
+        const avatarItem = e.target.closest('.avatar-popup__item');
+        if (avatarItem) {
+          const index = avatarItem.dataset.index;
+          const selectedAvatar = avatarImages[index];
+
+          // Update hidden input in the current form
+          const form = camera.closest('form');
+          const hiddenInput = form.querySelector('.selected-avatar');
+          hiddenInput.value = selectedAvatar;
+
+          // Update camera icon to selected avatar
+          const cameraIcon = camera.querySelector('.form__camera-icon');
+          cameraIcon.src = selectedAvatar;
+
+          // Close popup
+          avatarPopup.remove();
+        }
+      });
+
+      // Close popup when clicking close button or outside
+      closeButton.addEventListener('click', () => avatarPopup.remove());
+    });
+  });
 }

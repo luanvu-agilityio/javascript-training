@@ -898,6 +898,49 @@
   height: 1.5rem;
 }
 
+/* Avatar component */
+.avatar-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 2rem;
+  max-width: 40rem;
+}
+
+.avatar-popup__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: var(--font-size-23);
+  cursor: pointer;
+}
+
+.avatar-popup__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.avatar-popup__item {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.avatar-popup__item:hover {
+  transform: scale(1.1);
+}
+
+.avatar-popup__image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
