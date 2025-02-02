@@ -1,6 +1,4 @@
 import NotificationUtils from './notification-utils.js';
-let XLSX;
-
 export default class InvoiceExport {
   /**
    *
@@ -9,17 +7,14 @@ export default class InvoiceExport {
    */
   static async exportToExcel(selectedInvoices) {
     try {
-      XLSX = await import('xlsx');
-    } catch (e) {
-      try {
-        XLSX = await import('../../../node_modules/xlsx/xlsx.mjs');
-      } catch (err) {
-        console.error('Failed to load XLSX:', err);
-        new NotificationUtils().show('Failed to initialize export functionality', {
-          type: 'error',
-        });
-        return;
-      }
+      // Load XLSX from CDN
+      await this.loadXLSX();
+    } catch (err) {
+      console.error('Failed to load XLSX:', err);
+      new NotificationUtils().show('Failed to initialize export functionality', {
+        type: 'error',
+      });
+      return;
     }
     if (!selectedInvoices || selectedInvoices.length === 0) {
       new NotificationUtils().show('Please select invoices to export', { type: 'warning' });
@@ -114,6 +109,25 @@ export default class InvoiceExport {
     // Show success notification
     new NotificationUtils().show(`Exported ${selectedInvoices.length} invoice(s)`, {
       type: 'success',
+    });
+  }
+  static loadXLSX() {
+    return new Promise((resolve, reject) => {
+      if (window.XLSX) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      script.integrity =
+        'sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==';
+      script.crossOrigin = 'anonymous';
+
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load XLSX library'));
+
+      document.head.appendChild(script);
     });
   }
 }
