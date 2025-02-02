@@ -1,12 +1,26 @@
-import * as XLSX from '../../../node_modules/xlsx/xlsx.mjs';
 import NotificationUtils from './notification-utils.js';
+let XLSX;
 
 export default class InvoiceExport {
   /**
+   *
    * Export selected invoices to Excel file
    * @param {Array} selectedInvoices - Array of invoice objects to export
    */
-  static exportToExcel(selectedInvoices) {
+  static async exportToExcel(selectedInvoices) {
+    try {
+      XLSX = await import('xlsx');
+    } catch (e) {
+      try {
+        XLSX = await import('../../../node_modules/xlsx/xlsx.mjs');
+      } catch (err) {
+        console.error('Failed to load XLSX:', err);
+        new NotificationUtils().show('Failed to initialize export functionality', {
+          type: 'error',
+        });
+        return;
+      }
+    }
     if (!selectedInvoices || selectedInvoices.length === 0) {
       new NotificationUtils().show('Please select invoices to export', { type: 'warning' });
       return;
