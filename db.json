@@ -12,17 +12,6 @@
       "favorite": false
     },
     {
-      "id": "INV-25-01-3034",
-      "name": "ccc",
-      "email": "cccc@gmail.com",
-      "phoneNum": "22222",
-      "date": "2025-01-07",
-      "address": "123 test",
-      "status": "Pending",
-      "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-1.svg",
-      "favorite": false
-    },
-    {
       "id": "INV-25-01-4937",
       "name": "cccc",
       "email": "22222@gmail.com",
@@ -72,38 +61,6 @@
       "quantity": 11,
       "amount": 12100,
       "invoiceId": "INV-25-01-4937"
-    },
-    {
-      "id": "PRD-U5E9OXUZ",
-      "name": "samsung",
-      "rate": 300,
-      "quantity": 22,
-      "amount": 6600,
-      "invoiceId": "INV-25-01-3034"
-    },
-    {
-      "id": "PRD-L005MWCQ",
-      "name": "apple",
-      "rate": 500,
-      "quantity": 11,
-      "amount": 5500,
-      "invoiceId": "INV-25-01-3034"
-    },
-    {
-      "id": "PRD-UI9B5RGZ",
-      "name": "lg",
-      "rate": 200,
-      "quantity": 2,
-      "amount": 400,
-      "invoiceId": "INV-25-01-3034"
-    },
-    {
-      "id": "PRD-RY5ZDIUY",
-      "name": "nokia",
-      "rate": 200,
-      "quantity": 4,
-      "amount": 800,
-      "invoiceId": "INV-25-01-3034"
     },
     {
       "id": "PRD-UTM81N6L",
