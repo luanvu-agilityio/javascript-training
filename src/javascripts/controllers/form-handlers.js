@@ -71,6 +71,11 @@ export function toggleForm({ showCreate = false, showEdit = false }) {
  * Closes the currently open form and resets it.
  */
 export function closeForm() {
+  const activeForm = document.querySelector('.form--create:not(.hidden), .form--edit:not(.hidden)');
+  if (activeForm) {
+    resetAvatarState(activeForm);
+    originalAvatarState = null;
+  }
   toggleForm({});
   resetForm();
 }
@@ -196,6 +201,7 @@ export function collectFormData() {
 export function setFormData(invoice, discountPercentage) {
   try {
     const editForm = document.querySelector('.form--edit');
+    storeOriginalAvatarState(editForm);
     const fields = {
       'input[placeholder="#876370"]': invoice.id,
       'input[placeholder="Alison G."]': invoice.name,
@@ -214,20 +220,16 @@ export function setFormData(invoice, discountPercentage) {
     // Handle avatar
     if (invoice.avatarSrc) {
       const camera = editForm.querySelector('.form__camera');
-      const cameraIcon = camera.querySelector('.form__camera-icon');
+      const cameraIcon = camera.querySelector('.form__camera-icon, img');
       const hiddenAvatarInput = editForm.querySelector('.selected-avatar');
 
       if (cameraIcon) {
-        // Store the original camera icon source
-        if (!cameraIcon.dataset.originalSrc) {
-          cameraIcon.dataset.originalSrc = cameraIcon.src;
+        if (cameraIcon.src !== invoice.avatarSrc) {
+          cameraIcon.src = invoice.avatarSrc;
+          cameraIcon.classList.remove('form__camera-icon');
+          cameraIcon.classList.add('form__avatar-preview');
+          camera.classList.add('has-avatar');
         }
-
-        // Update the image
-        cameraIcon.src = invoice.avatarSrc;
-        cameraIcon.classList.remove('form__camera-icon');
-        cameraIcon.classList.add('form__avatar-preview');
-        camera.classList.add('has-avatar');
       }
 
       if (hiddenAvatarInput) {
@@ -371,7 +373,34 @@ export function setupAvatarSelection() {
       closeButton.addEventListener('click', handleCloseClick);
 
       // Insert reset button at the top of popup
-      avatarPopup.insertBefore(resetButton, avatarPopup.firstChild);
+      avatarPopup.insertBefore(avatarPopup.firstChild);
     });
   });
+}
+
+let originalAvatarState = null;
+
+export function storeOriginalAvatarState(form) {
+  const camera = form.querySelector('.form__camera');
+  const cameraIcon = camera?.querySelector('img');
+  if (cameraIcon) {
+    originalAvatarState = {
+      src: cameraIcon.src,
+      isAvatar: cameraIcon.classList.contains('form__avatar-preview'),
+      hasAvatar: camera.classList.contains('has-avatar'),
+    };
+  }
+}
+
+export function resetAvatarState(form) {
+  if (!originalAvatarState) return;
+
+  const camera = form.querySelector('.form__camera');
+  const cameraIcon = camera?.querySelector('img');
+  if (cameraIcon) {
+    cameraIcon.src = originalAvatarState.src;
+    cameraIcon.classList.toggle('form__avatar-preview', originalAvatarState.isAvatar);
+    cameraIcon.classList.toggle('form__camera-icon', !originalAvatarState.isAvatar);
+    camera.classList.toggle('has-avatar', originalAvatarState.hasAvatar);
+  }
 }
