@@ -187,7 +187,7 @@ export function collectFormData() {
 
     const phoneInput = activeForm.querySelector('.phone-input');
     const countryCode = activeForm.querySelector('.country-code').textContent;
-    formData.phoneNum = countryCode + ' ' + phoneInput.value.trim();
+    formData.phoneNum = '(' + countryCode + ')' + ' ' + phoneInput.value.trim();
     return formData;
   } catch {
     userErrorMessage.handleError(error, {
@@ -207,11 +207,16 @@ export function setFormData(invoice, discountPercentage) {
   try {
     const editForm = document.querySelector('.form--edit');
     storeOriginalAvatarState(editForm);
+
+    // Extract country code and phone number
+    const phoneMatch = invoice.phoneNum.match(/^\(([^)]+)\)\s*(.+)$/);
+    const countryCode = phoneMatch ? phoneMatch[1] : '';
+    const phoneNumber = phoneMatch ? phoneMatch[2].trim() : invoice.phoneNum;
     const fields = {
       'input[placeholder="#876370"]': invoice.id,
       'input[placeholder="Alison G."]': invoice.name,
       'input[type="email"]': invoice.email,
-      'input[type="tel"]': invoice.phoneNum,
+      'input[type="tel"]': phoneNumber,
       'input[type="date"]': invoice.date,
       'input[placeholder="Street"]': invoice.address,
       '#status': invoice.status,
@@ -221,6 +226,28 @@ export function setFormData(invoice, discountPercentage) {
       const element = editForm.querySelector(selector);
       if (element) element.value = value;
     });
+
+    //Populate country code back to dropdown
+    if (countryCode) {
+      const selectedCountry = editForm.querySelector('.selected-country');
+      if (selectedCountry) {
+        const countryCodeElement = selectedCountry.querySelector('.country-code');
+        if (countryCodeElement) {
+          countryCodeElement.textContent = countryCode;
+
+          // Find and update the flag based on the country code
+          const countryDropdown = editForm.querySelector('.country-dropdown');
+          const matchingOption = countryDropdown?.querySelector(`[data-code="${countryCode}"]`);
+          if (matchingOption) {
+            const flag = matchingOption.dataset.flag;
+            const flagElement = selectedCountry.querySelector('.country-flag');
+            if (flagElement) {
+              flagElement.textContent = flag;
+            }
+          }
+        }
+      }
+    }
 
     // Handle avatar
     if (invoice.avatarSrc) {
@@ -438,14 +465,13 @@ export function setupPhoneCountryCode() {
         // Hide dropdown
         dropdown.classList.add('hidden');
 
-        // Update phone input - look for closest form container instead of form element
+        // Update phone input
         const formContainer = select.closest('.form--create, .form--edit');
         if (formContainer) {
           const phoneInput = formContainer.querySelector('.phone-input');
           if (phoneInput) {
-            // Remove any existing country code from the phone number
+            // Remove any existing country code
             const phoneNumber = phoneInput.value.replace(/^\+?\d+\s*/, '');
-            // Keep just the number portion
             phoneInput.value = phoneNumber;
           }
         }

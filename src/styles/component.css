@@ -987,7 +987,7 @@
 
 .country-select {
   position: relative;
-  min-width: 100px;
+  min-width: 7.5rem;
 }
 
 .selected-country {
@@ -999,6 +999,8 @@
   border-radius: 6px;
   cursor: pointer;
   background: white;
+  min-height: 5rem;
+  margin-top: 0.5rem;
 }
 
 .selected-country:hover {

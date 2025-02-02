@@ -75,36 +75,27 @@ const Templates = {
         <div class="form__group-phone">
           <div class="country-select">
             <div class="selected-country">
-              <span class="country-flag">🇺🇸</span>
-              <span class="country-code">+1</span>
+              <span class="country-flag">VN</span>
+              <span class="country-code">+84</span>
               <span class="dropdown-arrow">▼</span>
             </div>
             <div class="country-dropdown">
-              <div class="country-option" data-code="+1" data-flag="🇺🇸">
-                <span class="country-flag">🇺🇸</span>
+              <div class="country-option" data-code="+84" data-flag="VN">
+                <span class="country-flag">VN</span>
+                <span class="country-code">+84</span>
+                <span class="country-name">Vietnam</span>
+              </div>
+              <div class="country-option" data-code="+61" data-flag="AUS">
+                <span class="country-flag">AUS</span>
+                <span class="country-code">+61</span>
+                <span class="country-name">Australia</span>
+              </div>
+              <div class="country-option" data-code="+1" data-flag="US">
+                <span class="country-flag">US</span>
                 <span class="country-code">+1</span>
                 <span class="country-name">United States</span>
               </div>
-              <div class="country-option" data-code="+44" data-flag="🇬🇧">
-                <span class="country-flag">🇬🇧</span>
-                <span class="country-code">+44</span>
-                <span class="country-name">United Kingdom</span>
-              </div>
-              <div class="country-option" data-code="+91" data-flag="🇮🇳">
-                <span class="country-flag">🇮🇳</span>
-                <span class="country-code">+91</span>
-                <span class="country-name">India</span>
-              </div>
-              <div class="country-option" data-code="+86" data-flag="🇨🇳">
-                <span class="country-flag">🇨🇳</span>
-                <span class="country-code">+86</span>
-                <span class="country-name">China</span>
-              </div>
-              <div class="country-option" data-code="+81" data-flag="🇯🇵">
-                <span class="country-flag">🇯🇵</span>
-                <span class="country-code">+81</span>
-                <span class="country-name">Japan</span>
-              </div>
+             
             </div>
           </div>
           <input class="form__group-input phone-input" type="tel" placeholder="xxx-xxx-xxxx" />

@@ -123,7 +123,6 @@ class InvoiceView {
           ? './assets/images/icons/main-view-icons/favorite-icon-active.png'
           : './assets/images/icons/main-view-icons/favorite-icon-inactive.png';
 
-        // Get the avatar source, fallback to default if not set
         const avatarSrc = invoice.avatarSrc || './assets/images/avatars/avatar-1.svg';
 
         return Templates.invoiceTemplate
@@ -135,7 +134,7 @@ class InvoiceView {
           .replace('favorite-icon-inactive', favoriteClass)
           .replace(/{{statusLower}}/g, invoice.status.toLowerCase())
           .replace(/favorite-icon-inactive\.png/, favoriteIconSrc.split('/').pop())
-          .replace('./assets/images/avatars/avatar-1.svg', avatarSrc); // Replace default avatar
+          .replace('./assets/images/avatars/avatar-1.svg', avatarSrc);
       })
       .join('');
   }
@@ -199,17 +198,20 @@ class InvoiceView {
       invoice.phoneNum;
 
     const previewTbody = this.previewSection.querySelector('.preview-table tbody');
-    previewTbody.innerHTML = invoice.products
+    previewTbody.innerHTML = '';
+    const productRows = invoice.products
       .map(
         (product) => `
-      <tr class="preview-table__row">
-        <td class="product-list__cell">${product.name}</td>
-        <td class="product-list__cell">${product.rate}</td>
-        <td class="product-list__cell">${product.quantity}</td>
-        <td class="product-list__cell">${(product.rate * product.quantity).toFixed(2)}</td>
-      </tr>`,
+        <tr class="preview-table__row">
+          <td class="product-list__cell">${product.name}</td>
+          <td class="product-list__cell">${product.rate}</td>
+          <td class="product-list__cell">${product.quantity}</td>
+          <td class="product-list__cell">${(product.rate * product.quantity).toFixed(2)}</td>
+        </tr>`,
       )
       .join('');
+
+    previewTbody.innerHTML = productRows;
   }
 
   /**
