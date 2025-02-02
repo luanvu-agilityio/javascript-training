@@ -608,9 +608,9 @@ class InvoiceController {
           formData.id,
           formData.name,
           formData.email,
-          formData.phoneNum,
           formData.date,
           formData.address,
+          formData.phoneNum,
           formData.status,
           products,
         );
@@ -619,8 +619,6 @@ class InvoiceController {
         this.view.clearInvoicePreview();
       }
     } catch (error) {
-      // console.error('Error updating preview:', error);
-
       this.userErrorMessage.handleError(error, {
         context: 'InvoiceController',
         operation: 'preview-update',

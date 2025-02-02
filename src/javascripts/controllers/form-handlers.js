@@ -3,6 +3,7 @@ import ValidationUtils from '../helpers/validation-utils.js';
 import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
 import Templates from '../templates/templates.js';
+import InvoiceView from '../views/view.js';
 import avatarImages from '../helpers/avatar-image.js';
 /**
  * Setup event listener for any form related actions
@@ -79,12 +80,21 @@ export function closeForm() {
   }
   toggleForm({});
   resetForm();
+
+  const previewSection = document.querySelector('.preview');
+  if (previewSection) {
+    const view = new InvoiceView();
+    view.clearInvoicePreview();
+  }
 }
 
 /**
  * Shows the create form and resets it.
  */
 export function showCreateForm() {
+  const view = new InvoiceView();
+  view.clearInvoicePreview();
+
   toggleForm({ showCreate: true });
   resetForm();
 
@@ -100,6 +110,9 @@ export function showCreateForm() {
  * Shows the edit form and resets it
  */
 export function showEditForm() {
+  const view = new InvoiceView();
+  view.clearInvoicePreview();
+
   toggleForm({ showEdit: true });
 }
 

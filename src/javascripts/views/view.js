@@ -166,6 +166,20 @@ class InvoiceView {
       summaryValues.forEach((value) => {
         value.textContent = '$0.00';
       });
+      // Clear invoice header details
+      this.previewSection.querySelector('.preview__invoice-label--id').innerHTML =
+        'Invoice ID: <br/><span></span>';
+      this.previewSection.querySelector('.preview__invoice-label--date').innerHTML =
+        'Invoice Date: <br/><span></span>';
+
+      // Clear recipient details
+      this.previewSection.querySelector('.recipient__name').textContent = '';
+      this.previewSection.querySelector('.recipient__address').textContent = '';
+
+      // Clear contact information
+      this.previewSection.querySelector('.preview-company__email .email-address').textContent = '';
+      this.previewSection.querySelector('.preview-company__phone .recipient-phone').textContent =
+        '';
     }
   }
 
