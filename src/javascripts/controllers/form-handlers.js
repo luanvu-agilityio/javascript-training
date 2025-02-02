@@ -15,6 +15,7 @@ export function setupFormEventListeners(onDiscountChange) {
     setupCreateFormButton();
     setupDiscountInputHandler(onDiscountChange);
     setupAvatarSelection();
+    setupPhoneCountryCode();
   } catch (error) {
     userErrorMessage.handleError(error, {
       context: 'FormHandlers',
@@ -143,6 +144,7 @@ export function collectFormData() {
     const isEditForm = activeForm.classList.contains('form--edit');
 
     // Get all form inputs
+
     const inputs = {
       id: activeForm.querySelector(
         '.form__group-input[name="invoice-id"], input[name="invoice-id"]',
@@ -183,6 +185,9 @@ export function collectFormData() {
       avatarSrc: inputs.avatar?.value || './assets/images/recipient-image.png',
     };
 
+    const phoneInput = activeForm.querySelector('.phone-input');
+    const countryCode = activeForm.querySelector('.country-code').textContent;
+    formData.phoneNum = countryCode + ' ' + phoneInput.value.trim();
     return formData;
   } catch {
     userErrorMessage.handleError(error, {
@@ -400,4 +405,51 @@ export function resetAvatarState(form) {
     cameraIcon.classList.toggle('form__camera-icon', !originalAvatarState.isAvatar);
     camera.classList.toggle('has-avatar', originalAvatarState.hasAvatar);
   }
+}
+
+export function setupPhoneCountryCode() {
+  document.querySelectorAll('.country-select').forEach((select) => {
+    const selectedCountry = select.querySelector('.selected-country');
+    const dropdown = select.querySelector('.country-dropdown');
+    const options = select.querySelectorAll('.country-option');
+
+    // Toggle dropdown
+    selectedCountry.addEventListener('click', () => {
+      dropdown.classList.remove('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!select.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Handle option selection
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        const code = option.dataset.code;
+        const flag = option.dataset.flag;
+
+        // Update selected country display
+        selectedCountry.querySelector('.country-flag').textContent = flag;
+        selectedCountry.querySelector('.country-code').textContent = code;
+
+        // Hide dropdown
+        dropdown.classList.add('hidden');
+
+        // Update phone input - look for closest form container instead of form element
+        const formContainer = select.closest('.form--create, .form--edit');
+        if (formContainer) {
+          const phoneInput = formContainer.querySelector('.phone-input');
+          if (phoneInput) {
+            // Remove any existing country code from the phone number
+            const phoneNumber = phoneInput.value.replace(/^\+?\d+\s*/, '');
+            // Keep just the number portion
+            phoneInput.value = phoneNumber;
+          }
+        }
+      });
+    });
+  });
 }

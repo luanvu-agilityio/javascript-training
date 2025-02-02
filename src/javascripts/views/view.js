@@ -181,35 +181,35 @@ class InvoiceView {
     }
     const logoElement = this.previewSection.querySelector('.preview__customer-logo img');
     setCustomerLogo(invoice.name, logoElement);
-    this.previewSection.querySelector('.preview__invoice-label--id').innerHTML = `Invoice ID: <br/>
-      <span>${invoice.id}</span>`;
-    this.previewSection.querySelector('.preview-company__email .email-address').innerHTML =
-      invoice.email;
-    this.previewSection.querySelector('.preview-company__phone .phone-number').innerHTML =
-      invoice.phoneNum;
-    this.previewSection.querySelector('.preview__invoice .recipient__name').innerHTML =
-      invoice.name;
-    this.previewSection.querySelector('.preview__invoice .recipient__address').innerHTML =
-      invoice.address;
-    this.previewSection.querySelector('.preview__invoice-label--date').innerHTML =
-      `Invoice Date: <br/>
-      <span>${invoice.date}</span>`;
 
-    const previewTbody = this.previewSection.querySelector('tbody');
-    previewTbody.innerHTML = '';
-    const productRows = invoice.products
+    // Update invoice header details
+    this.previewSection.querySelector('.preview__invoice-label--id').innerHTML =
+      `Invoice ID: <br/><span>${invoice.id}</span>`;
+    this.previewSection.querySelector('.preview__invoice-label--date').innerHTML =
+      `Invoice Date: <br/><span>${invoice.date}</span>`;
+
+    // Update recipient details section
+    this.previewSection.querySelector('.recipient__name').textContent = invoice.name;
+    this.previewSection.querySelector('.recipient__address').textContent = invoice.address;
+
+    // Update contact information
+    this.previewSection.querySelector('.preview-company__email .email-address').textContent =
+      invoice.email;
+    this.previewSection.querySelector('.preview-company__phone .recipient-phone').textContent =
+      invoice.phoneNum;
+
+    const previewTbody = this.previewSection.querySelector('.preview-table tbody');
+    previewTbody.innerHTML = invoice.products
       .map(
         (product) => `
-        <tr class="preview-table__row">
-          <td class="product-list__cell">${product.name}</td>
-          <td class="product-list__cell">${product.rate}</td>
-          <td class="product-list__cell">${product.quantity}</td>
-          <td class="product-list__cell">${(product.rate * product.quantity).toFixed(2)}</td>
-        </tr>`,
+      <tr class="preview-table__row">
+        <td class="product-list__cell">${product.name}</td>
+        <td class="product-list__cell">${product.rate}</td>
+        <td class="product-list__cell">${product.quantity}</td>
+        <td class="product-list__cell">${(product.rate * product.quantity).toFixed(2)}</td>
+      </tr>`,
       )
       .join('');
-
-    previewTbody.innerHTML = productRows;
   }
 
   /**

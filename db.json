@@ -15,7 +15,7 @@
       "id": "INV-25-01-4937",
       "name": "cccc",
       "email": "22222@gmail.com",
-      "phoneNum": "22222222",
+      "phoneNum": "+91 2222222",
       "date": "2025-01-01",
       "address": "123 ddddddd",
       "status": "Pending",
@@ -43,6 +43,17 @@
       "status": "Complete",
       "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-2.svg",
       "favorite": false
+    },
+    {
+      "id": "INV-25-02-3064",
+      "name": "Alex",
+      "email": "alex123@gmail.com",
+      "phoneNum": "+91 1234567889",
+      "date": "2025-01-29",
+      "address": "12 test",
+      "status": "Pending",
+      "avatarSrc": "./assets/images/recipient-image.png",
+      "favorite": false
     }
   ],
   "products": [
@@ -53,14 +64,6 @@
       "quantity": 22,
       "amount": 4884,
       "invoiceId": "INV-25-01-8870"
-    },
-    {
-      "id": "PRD-ZZEH79F1",
-      "name": "sony",
-      "rate": 1100,
-      "quantity": 11,
-      "amount": 12100,
-      "invoiceId": "INV-25-01-4937"
     },
     {
       "id": "PRD-UTM81N6L",
@@ -85,6 +88,22 @@
       "quantity": 2,
       "amount": 400,
       "invoiceId": "INV-25-01-6999"
+    },
+    {
+      "id": "PRD-0CRW8DLY",
+      "name": "sony",
+      "rate": 1100,
+      "quantity": 11,
+      "amount": 12100,
+      "invoiceId": "INV-25-01-4937"
+    },
+    {
+      "id": "PRD-HXCQ4XNT",
+      "name": "ipad",
+      "rate": 11,
+      "quantity": 22,
+      "amount": 242,
+      "invoiceId": "INV-25-02-3064"
     }
   ]
 }

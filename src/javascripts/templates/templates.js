@@ -71,8 +71,44 @@ const Templates = {
         </select>
       </div>
       <div class="form__group">
-        <label class="form__group-label">Phone number</label>
-        <input class="form__group-input" type="tel" placeholder="xxx-xxx-xxxx" />
+       <label class="form__group-label">Phone number</label>
+        <div class="form__group-phone">
+          <div class="country-select">
+            <div class="selected-country">
+              <span class="country-flag">🇺🇸</span>
+              <span class="country-code">+1</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="country-dropdown">
+              <div class="country-option" data-code="+1" data-flag="🇺🇸">
+                <span class="country-flag">🇺🇸</span>
+                <span class="country-code">+1</span>
+                <span class="country-name">United States</span>
+              </div>
+              <div class="country-option" data-code="+44" data-flag="🇬🇧">
+                <span class="country-flag">🇬🇧</span>
+                <span class="country-code">+44</span>
+                <span class="country-name">United Kingdom</span>
+              </div>
+              <div class="country-option" data-code="+91" data-flag="🇮🇳">
+                <span class="country-flag">🇮🇳</span>
+                <span class="country-code">+91</span>
+                <span class="country-name">India</span>
+              </div>
+              <div class="country-option" data-code="+86" data-flag="🇨🇳">
+                <span class="country-flag">🇨🇳</span>
+                <span class="country-code">+86</span>
+                <span class="country-name">China</span>
+              </div>
+              <div class="country-option" data-code="+81" data-flag="🇯🇵">
+                <span class="country-flag">🇯🇵</span>
+                <span class="country-code">+81</span>
+                <span class="country-name">Japan</span>
+              </div>
+            </div>
+          </div>
+          <input class="form__group-input phone-input" type="tel" placeholder="xxx-xxx-xxxx" />
+        </div>
       </div>
       <div class="form__group">
         <label class="form__group-label">Address</label>
@@ -142,41 +178,27 @@ const Templates = {
     </div>
   </div>
 
-  <div class="preview__content">
-    <div class="preview__customer">
-      <div class="preview__customer-logo">
-        <img 
-          class="preview__recipient-logo"
-          src="./assets/images/recipient-logo.png"
-          alt="recipient logo"
-        />
-      </div>
-      <div class="preview__customer-info">
-        <div class="preview__customer-email">
-          &#64; <span class="email-address">your.mail@gmail.com</span>
-        </div>
-        <div class="preview__customer-phone">
-          m <span class="phone-number">+388 953 217 3815</span>
-        </div>
-      </div>
-    </div>
-
+   <div class="preview__content">
     <div class="preview__invoice">
       <div class="preview__invoice-details">
+        <!-- Recipient section -->
         <div class="recipient-details">
-          <span class="recipient__info">recipient</span><br />
+          <span class="recipient__info">recipient</span>
           <div class="contact-details">
             <p class="recipient__name"></p>
             <p class="recipient__address"></p>
           </div>
           <div class="preview-company__info">
-            <div class="preview-company__email">&#64; <span class="email-address"> </span></div>
+            <div class="preview-company__email">
+              &#64; <span class="email-address"></span>
+            </div>
             <div class="preview-company__phone">
-              m <span class="phone-number"> </span>
+              m <span class="phone-number recipient-phone"></span>
             </div>
           </div>
         </div>
 
+        <!-- Invoice header section -->
         <div class="preview__invoice-header">
           <div class="preview__invoice-title">Invoice</div>
           <div class="invoice-number">
