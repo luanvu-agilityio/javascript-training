@@ -3,6 +3,7 @@ import ValidationUtils from '../helpers/validation-utils.js';
 import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
 import Templates from '../templates/templates.js';
+import avatarImages from '../helpers/avatar-image.js';
 /**
  * Setup event listener for any form related actions
  * @param {Function} onDiscountChange - callback function to handle discount input changes
@@ -210,6 +211,30 @@ export function setFormData(invoice, discountPercentage) {
       if (element) element.value = value;
     });
 
+    // Handle avatar
+    if (invoice.avatarSrc) {
+      const camera = editForm.querySelector('.form__camera');
+      const cameraIcon = camera.querySelector('.form__camera-icon');
+      const hiddenAvatarInput = editForm.querySelector('.selected-avatar');
+
+      if (cameraIcon) {
+        // Store the original camera icon source
+        if (!cameraIcon.dataset.originalSrc) {
+          cameraIcon.dataset.originalSrc = cameraIcon.src;
+        }
+
+        // Update the image
+        cameraIcon.src = invoice.avatarSrc;
+        cameraIcon.classList.remove('form__camera-icon');
+        cameraIcon.classList.add('form__avatar-preview');
+        camera.classList.add('has-avatar');
+      }
+
+      if (hiddenAvatarInput) {
+        hiddenAvatarInput.value = invoice.avatarSrc;
+      }
+    }
+
     const discountInput = editForm.querySelector('.discount-input');
     if (discountInput) {
       discountInput.value = discountPercentage;
@@ -243,38 +268,110 @@ export function setupAvatarSelection() {
   const cameraTriggers = document.querySelectorAll('.form__camera');
 
   cameraTriggers.forEach((camera) => {
+    let currentAvatarSrc = null; // Track current avatar
+
     camera.addEventListener('click', () => {
+      // Remove any existing popups first
+      const existingPopup = document.querySelector('.avatar-popup');
+      if (existingPopup) {
+        existingPopup.remove();
+      }
+
       // Create and append avatar popup
       const popupContainer = document.createElement('div');
       popupContainer.innerHTML = Templates.avatarPopupTemplate;
-      document.body.appendChild(popupContainer.firstElementChild);
+      const avatarPopup = popupContainer.firstElementChild;
+      document.body.appendChild(avatarPopup);
 
-      const avatarPopup = document.querySelector('.avatar-popup');
       const closeButton = avatarPopup.querySelector('.avatar-popup__close');
 
-      // Handle avatar selection
-      avatarPopup.addEventListener('click', (e) => {
+      // Handler for avatar selection
+      const handleAvatarSelection = (e) => {
         const avatarItem = e.target.closest('.avatar-popup__item');
-        if (avatarItem) {
-          const index = avatarItem.dataset.index;
-          const selectedAvatar = avatarImages[index];
+        if (!avatarItem) return;
 
-          // Update hidden input in the current form
-          const form = camera.closest('form');
+        const avatarImg = avatarItem.querySelector('img');
+        if (!avatarImg) return;
+
+        const selectedAvatarSrc = avatarImg.src;
+        // currentAvatarSrc = selectedAvatarSrc;
+
+        // Update form elements
+        const form = camera.closest('.form--create, .form--edit');
+        if (form) {
+          // Update hidden input
           const hiddenInput = form.querySelector('.selected-avatar');
-          hiddenInput.value = selectedAvatar;
+          if (hiddenInput) {
+            hiddenInput.value = selectedAvatarSrc;
+          }
 
-          // Update camera icon to selected avatar
-          const cameraIcon = camera.querySelector('.form__camera-icon');
-          cameraIcon.src = selectedAvatar;
+          // Update camera icon
+          // First, find existing icon or create new one
+          let imageElement = camera.querySelector('img');
+          if (!imageElement) {
+            imageElement = document.createElement('img');
+            camera.appendChild(imageElement);
+          }
 
-          // Close popup
-          avatarPopup.remove();
+          // Update image properties
+          imageElement.src = selectedAvatarSrc;
+          imageElement.classList.remove('form__camera-icon');
+          imageElement.classList.add('form__avatar-preview');
+          camera.classList.add('has-avatar');
+
+          // Store original camera icon source if not already stored
+          if (!imageElement.dataset.originalSrc) {
+            imageElement.dataset.originalSrc =
+              './assets/images/icons/create-invoice-modal-icons/camera-icon.svg';
+          }
+          if (form.classList.contains('form--edit')) {
+            const invoiceIdInput = form.querySelector('input[name="invoice-id"]');
+            if (invoiceIdInput && window.invoiceView) {
+              window.invoiceView.updateInvoiceAvatar(invoiceIdInput.value, selectedAvatarSrc);
+            }
+          }
         }
-      });
 
-      // Close popup when clicking close button or outside
-      closeButton.addEventListener('click', () => avatarPopup.remove());
+        removePopupAndListeners();
+      };
+
+      // Handler for clicking outside popup
+      const handleClickOutside = (e) => {
+        if (!avatarPopup.contains(e.target) && !camera.contains(e.target)) {
+          removePopupAndListeners();
+        }
+      };
+
+      // Handler for escape key
+      const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+          removePopupAndListeners();
+        }
+      };
+
+      // Clean up function to remove popup and all listeners
+      const removePopupAndListeners = () => {
+        document.removeEventListener('click', handleClickOutside);
+        document.removeEventListener('keydown', handleEscapeKey);
+        closeButton.removeEventListener('click', handleCloseClick);
+        avatarPopup.removeEventListener('click', handleAvatarSelection);
+        avatarPopup.remove();
+      };
+
+      // Handler for close button
+      const handleCloseClick = (e) => {
+        e.stopPropagation();
+        removePopupAndListeners();
+      };
+
+      // Add all event listeners
+      avatarPopup.addEventListener('click', handleAvatarSelection);
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+      closeButton.addEventListener('click', handleCloseClick);
+
+      // Insert reset button at the top of popup
+      avatarPopup.insertBefore(resetButton, avatarPopup.firstChild);
     });
   });
 }

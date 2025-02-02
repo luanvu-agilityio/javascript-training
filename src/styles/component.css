@@ -899,6 +899,7 @@
 }
 
 /* Avatar component */
+
 .avatar-popup {
   position: fixed;
   top: 50%;
@@ -908,15 +909,16 @@
   border-radius: 1rem;
   box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  padding: 2rem;
+  padding: 2.5rem;
   max-width: 40rem;
+  min-width: 30rem;
 }
 
 .avatar-popup__close {
   position: absolute;
-  top: 1rem;
+  top: 0;
   right: 1rem;
-  font-size: var(--font-size-23);
+  font-size: var(--font-size-26);
   cursor: pointer;
 }
 
@@ -940,6 +942,37 @@
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.form__camera-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.form__avatar-preview {
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.form__camera.has-avatar {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar-popup__reset {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.avatar-popup__reset:hover {
+  background: #e0e0e0;
 }
 @keyframes spin {
   0% {

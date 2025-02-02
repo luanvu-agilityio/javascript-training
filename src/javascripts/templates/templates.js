@@ -263,7 +263,7 @@ const Templates = {
   <td class="table__cell" data-label="Invoice Id">{{id}}</td>
   <td class="table__cell" data-label="Name">
     <div class="table__user">
-      <img class="table__user-avatar" src="{{avatarSrc}}" alt="avatar" />
+      <img class="table__user-avatar" src="./assets/images/avatars/avatar-1.svg" alt="avatar" />
       <span class="table__user-name">{{name}}</span>
     </div>
   </td>

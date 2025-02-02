@@ -123,6 +123,9 @@ class InvoiceView {
           ? './assets/images/icons/main-view-icons/favorite-icon-active.png'
           : './assets/images/icons/main-view-icons/favorite-icon-inactive.png';
 
+        // Get the avatar source, fallback to default if not set
+        const avatarSrc = invoice.avatarSrc || './assets/images/avatars/avatar-1.svg';
+
         return Templates.invoiceTemplate
           .replace(/{{id}}/g, invoice.id)
           .replace(/{{name}}/g, invoice.name)
@@ -131,9 +134,21 @@ class InvoiceView {
           .replace(/{{status}}/g, invoice.status)
           .replace('favorite-icon-inactive', favoriteClass)
           .replace(/{{statusLower}}/g, invoice.status.toLowerCase())
-          .replace(/favorite-icon-inactive\.png/, favoriteIconSrc.split('/').pop());
+          .replace(/favorite-icon-inactive\.png/, favoriteIconSrc.split('/').pop())
+          .replace('./assets/images/avatars/avatar-1.svg', avatarSrc); // Replace default avatar
       })
       .join('');
+  }
+  updateInvoiceAvatar(invoiceId, avatarSrc) {
+    const invoiceRow = this.invoiceList
+      .querySelector(`[data-label="Invoice Id"]:contains("${invoiceId}")`)
+      .closest('.table__row');
+    if (invoiceRow) {
+      const avatarImg = invoiceRow.querySelector('.table__user-avatar');
+      if (avatarImg) {
+        avatarImg.src = avatarSrc;
+      }
+    }
   }
 
   /**
