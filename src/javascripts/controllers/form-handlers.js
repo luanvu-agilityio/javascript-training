@@ -371,9 +371,6 @@ export function setupAvatarSelection() {
       document.addEventListener('click', handleClickOutside);
       document.addEventListener('keydown', handleEscapeKey);
       closeButton.addEventListener('click', handleCloseClick);
-
-      // Insert reset button at the top of popup
-      avatarPopup.insertBefore(avatarPopup.firstChild);
     });
   });
 }
