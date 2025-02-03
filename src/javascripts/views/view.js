@@ -1,6 +1,6 @@
 import Templates from '../templates/templates.js';
 import { updateInvoiceIdPlaceholder } from '../helpers/invoice-id-utils.js';
-import { setCustomerLogo } from '../helpers/customer-logo-handler.js';
+import { setCustomerLogo } from '../constants/customer-logo-handler.js';
 
 /**
  * This class handles the rendering of invoices in the view, including the invoice list and invoice preview.
@@ -45,10 +45,10 @@ class InvoiceView {
    *
    */
   openPopup(popup) {
-    // First close any existing popup
+    // Close any existing popup
     this.closeActivePopup();
 
-    // Then open the new one
+    // Open the new one
     popup.classList.add('active');
 
     // Store references to active elements
@@ -138,6 +138,7 @@ class InvoiceView {
       })
       .join('');
   }
+
   updateInvoiceAvatar(invoiceId, avatarSrc) {
     const invoiceRow = this.invoiceList
       .querySelector(`[data-label="Invoice Id"]:contains("${invoiceId}")`)
@@ -229,7 +230,7 @@ class InvoiceView {
   }
 
   /**
-   * Setup favi=orite icon click handler
+   * Setup favorite icon click handler
    * @param {Function} onFavoriteToggle - callback to handle favorite state update
    */
 
@@ -265,78 +266,7 @@ class InvoiceView {
     const previewSection = document.querySelector('.preview');
     const clonedPreview = previewSection.cloneNode(true);
 
-    const printStyles = `
-    <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .preview {
-      width: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .recipient__info, .preview__invoice-title {
-      text-transform: upperCase;
-      font-weight: 700;
-    }
-
-    .preview__invoice-header,.invoice-number {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .preview__customer,
-    .preview__invoice-details{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    } 
-
-    .preview-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    .preview-table th,
-    .preview-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .preview-summary {
-      text-align: center;
-      margin-top: 20px;
-    }
-  
-    .preview-summary__row {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 50px;
-    }
-
-    .preview-footer {
-      margin-top: 30px;
-      font-size: 0.9em;
-      color: #666;
-    }
-    
-    .preview-footer__company {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #ddd;
-    }
-    </style>
-    `;
+    const printStyles = '';
     //Remove unnecessary elements
     const actions = clonedPreview.querySelectorAll('.preview__main__actions');
     actions.forEach((element) => element.remove());

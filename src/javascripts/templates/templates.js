@@ -1,4 +1,4 @@
-import avatarImages from '../helpers/avatar-image.js';
+import avatarImages from '../constants/avatar-image.js';
 const Templates = {
   avatarPopupTemplate: `
   <div class="avatar-popup">
