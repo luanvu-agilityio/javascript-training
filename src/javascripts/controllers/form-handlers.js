@@ -4,7 +4,7 @@ import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
 import Templates from '../templates/templates.js';
 import InvoiceView from '../views/view.js';
-import avatarImages from '../helpers/avatar-image.js';
+import avatarImages from '../constants/avatar-image.js';
 /**
  * Setup event listener for any form related actions
  * @param {Function} onDiscountChange - callback function to handle discount input changes
@@ -57,7 +57,6 @@ export function setupDiscountInputHandler(onDiscountChange) {
 
 /**
  * Helper methods to show/hide forms
- *
  * @param {Object} options - to control which form to show/hide
  * @param {boolean} options.showCreate - to show create form
  * @param {boolean} options.showEdit - to show edit form
@@ -157,7 +156,6 @@ export function collectFormData() {
     const isEditForm = activeForm.classList.contains('form--edit');
 
     // Get all form inputs
-
     const inputs = {
       id: activeForm.querySelector(
         '.form__group-input[name="invoice-id"], input[name="invoice-id"]',
@@ -315,10 +313,10 @@ export function setupAvatarSelection() {
   const cameraTriggers = document.querySelectorAll('.form__camera');
 
   cameraTriggers.forEach((camera) => {
-    let currentAvatarSrc = null; // Track current avatar
+    let currentAvatarSrc = null;
 
     camera.addEventListener('click', () => {
-      // Remove any existing popups first
+      // Remove any existing popups
       const existingPopup = document.querySelector('.avatar-popup');
       if (existingPopup) {
         existingPopup.remove();
@@ -341,7 +339,7 @@ export function setupAvatarSelection() {
         if (!avatarImg) return;
 
         const selectedAvatarSrc = avatarImg.src;
-        // currentAvatarSrc = selectedAvatarSrc;
+        currentAvatarSrc = selectedAvatarSrc;
 
         // Update form elements
         const form = camera.closest('.form--create, .form--edit');
