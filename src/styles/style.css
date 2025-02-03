@@ -566,6 +566,11 @@
   justify-content: space-between;
 }
 
+.sidebar__menu-link.favorite-invoices-link .sidebar__menu-icon {
+  width: 5.7rem;
+  height: 4.7rem;
+}
+
 /* Mobile styles */
 
 @media screen and (max-width: 1440px) {

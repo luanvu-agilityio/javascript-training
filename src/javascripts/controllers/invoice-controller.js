@@ -1,15 +1,15 @@
-import Invoice from '../model/model.js';
+import Invoice from '../models/model.js';
 import Templates from '../templates/templates.js';
 import InvoiceView from '../views/view.js';
 import ValidationUtils from '../helpers/validation-utils.js';
 import NotificationUtils from '../helpers/notification-utils.js';
-import DataHandler from '../data-handler.js';
+import InvoiceService from '../services/invoice.js';
 import LoadingUtils from '../helpers/loading-utils.js';
 import InvoiceExport from '../helpers/invoice-export.js';
 import UserErrorMessage from '../helpers/user-error-message.js';
-import * as formHandlers from './form-handlers.js';
-import * as productHandlers from './product-handlers.js';
-import { sortHandlers } from './sort-handler.js';
+import * as formHandlers from '../helpers/form-handlers.js';
+import * as productHandlers from '../helpers/product-handlers.js';
+import { sortHandlers } from '../helpers/sort-handlers.js';
 
 import { generateInvoiceId, updateInvoiceIdPlaceholder } from '../helpers/invoice-id-utils.js';
 
@@ -36,7 +36,7 @@ class InvoiceController {
     this.view = new InvoiceView();
     this.validator = new ValidationUtils();
     this.notification = new NotificationUtils();
-    this.dataHandler = new DataHandler();
+    this.invoiceService = new InvoiceService();
     this.loading = new LoadingUtils();
     this.userErrorMessage = new UserErrorMessage();
   }
@@ -63,7 +63,7 @@ class InvoiceController {
     this.setupDeletionListeners();
     this.setupSidebarInvoiceLink();
     this.setupExportInvoice();
-    this.view.setupFavoriteHandler();
+    this.setupFavoriteHandler();
   }
 
   setupInvoiceListListeners() {
@@ -138,7 +138,7 @@ class InvoiceController {
   async loadInvoices() {
     this.loading.show();
     try {
-      this.invoices = await this.dataHandler.getInvoiceList();
+      this.invoices = await this.invoiceService.getInvoiceList();
       this.view.renderInvoiceList(this.invoices);
       sortHandlers(this.invoices, (sortedInvoices) => this.view.renderInvoiceList(sortedInvoices));
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -197,17 +197,56 @@ class InvoiceController {
     const invoiceLink = document.querySelector(
       '.sidebar__menu-item:nth-child(3) .sidebar__menu-link',
     );
+    const favoriteInvoicesLink = document.querySelector('.favorite-invoices-link');
+
     if (invoiceLink) {
       invoiceLink.addEventListener('click', () => {
         // Close any active forms
         formHandlers.resetFormStates();
         formHandlers.resetForm();
         this.view.clearInvoicePreview();
-        // Show main view
+        // Show main view with all invoices
         document.querySelector('.main').classList.remove('hidden');
         document.querySelector('.content').style.display = 'none';
+        this.view.renderInvoiceList(this.invoices);
       });
     }
+
+    if (favoriteInvoicesLink) {
+      favoriteInvoicesLink.addEventListener('click', () => {
+        // Close any active forms
+        formHandlers.resetFormStates();
+        formHandlers.resetForm();
+        this.view.clearInvoicePreview();
+        // Show main view with only favorite invoices
+        document.querySelector('.main').classList.remove('hidden');
+        document.querySelector('.content').style.display = 'none';
+        this.view.renderFavoriteInvoices(this.invoices);
+      });
+    }
+  }
+
+  setupFavoriteHandler() {
+    this.view.setupFavoriteHandler(async (invoiceId, isFavorite) => {
+      try {
+        // Find the invoice
+        const invoice = this.invoices.find((inv) => inv.id === invoiceId);
+        if (invoice) {
+          // Update favorite status
+          invoice.favorite = isFavorite;
+
+          // Update in database using existing updateInvoice method
+          await this.invoiceService.updateInvoice(invoiceId, invoice);
+        }
+      } catch (error) {
+        this.userErrorMessage.handleError(error, {
+          context: 'InvoiceController',
+          operation: 'favorite-toggle',
+        });
+        // Revert UI if database update fails
+        this.view.renderInvoiceList(this.invoices);
+      }
+    });
   }
 
   /**
@@ -285,8 +324,8 @@ class InvoiceController {
   async editInvoice(id) {
     try {
       const [invoice, products] = await Promise.all([
-        this.dataHandler.getInvoiceById(id),
-        this.dataHandler.getProductsByInvoiceId(id),
+        this.invoiceService.getInvoiceById(id),
+        this.invoiceService.getProductsByInvoiceId(id),
       ]);
 
       if (!invoice) {
@@ -381,14 +420,14 @@ class InvoiceController {
   }
 
   async createInvoiceWithProducts(formData, products) {
-    const invoice = await this.dataHandler.createInvoice({
+    const invoice = await this.invoiceService.createInvoice({
       ...formData,
       favorite: false,
     });
 
     await Promise.all(
       products.map((product) =>
-        this.dataHandler.addProduct({
+        this.invoiceService.addProduct({
           ...product,
           invoiceId: invoice.id,
         }),
@@ -399,18 +438,18 @@ class InvoiceController {
   }
 
   async updateInvoiceWithProducts(formData, products) {
-    const updatedInvoice = await this.dataHandler.updateInvoice(formData.id, {
+    const updatedInvoice = await this.invoiceService.updateInvoice(formData.id, {
       ...formData,
       favorite: this.invoices.find((inv) => inv.id === formData.id)?.favorite || false,
     });
 
-    const existingProducts = await this.dataHandler.getProductsByInvoiceId(formData.id);
+    const existingProducts = await this.invoiceService.getProductsByInvoiceId(formData.id);
     await Promise.all(
-      existingProducts.map((product) => this.dataHandler.deleteProduct(product.id)),
+      existingProducts.map((product) => this.invoiceService.deleteProduct(product.id)),
     );
 
     for (const product of products) {
-      await this.dataHandler.addProduct({
+      await this.invoiceService.addProduct({
         ...product,
         invoiceId: formData.id,
       });
@@ -522,14 +561,14 @@ class InvoiceController {
         if (confirmed) {
           // Delete all products for these invoices first
           for (const invoiceId of idsToDelete) {
-            const products = await this.dataHandler.getProductsByInvoiceId(invoiceId);
+            const products = await this.invoiceService.getProductsByInvoiceId(invoiceId);
             await Promise.all(
-              products.map((product) => this.dataHandler.deleteProduct(product.id)),
+              products.map((product) => this.invoiceService.deleteProduct(product.id)),
             );
           }
 
           // Delete all invoices
-          await this.dataHandler.deleteMultipleInvoices(idsToDelete);
+          await this.invoiceService.deleteMultipleInvoices(idsToDelete);
 
           // Update local state
           this.invoices = this.invoices.filter((invoice) => !idsToDelete.includes(invoice.id));
@@ -548,11 +587,13 @@ class InvoiceController {
         const confirmed = await this.confirmDeletion(1, invoiceId);
         if (confirmed) {
           // Delete all products for this invoice first
-          const products = await this.dataHandler.getProductsByInvoiceId(invoiceId);
-          await Promise.all(products.map((product) => this.dataHandler.deleteProduct(product.id)));
+          const products = await this.invoiceService.getProductsByInvoiceId(invoiceId);
+          await Promise.all(
+            products.map((product) => this.invoiceService.deleteProduct(product.id)),
+          );
 
           // Delete the invoice
-          await this.dataHandler.deleteInvoice(invoiceId);
+          await this.invoiceService.deleteInvoice(invoiceId);
 
           // Update local state
           this.invoices = this.invoices.filter((invoice) => invoice.id !== invoiceId);
@@ -635,8 +676,8 @@ class InvoiceController {
       });
       const selectedInvoices = await Promise.all(
         selectedInvoiceIds.map(async (id) => {
-          const invoice = await this.dataHandler.getInvoiceById(id);
-          const products = await this.dataHandler.getProductsByInvoiceId(id);
+          const invoice = await this.invoiceService.getInvoiceById(id);
+          const products = await this.invoiceService.getProductsByInvoiceId(id);
           return { ...invoice, products };
         }),
       );

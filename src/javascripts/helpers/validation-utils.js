@@ -1,8 +1,7 @@
+import { VALIDATION_CRITERIA, EMAIL_REGEX } from '../constants/validation-messages.js';
 class ValidationUtils {
   constructor() {
-    this.emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    // this.invoiceIdRegex = /^#?\d{6,}$/;
+    this.emailRegex = EMAIL_REGEX;
   }
 
   /**
@@ -15,38 +14,38 @@ class ValidationUtils {
 
     // Validate Name
     if (!formData.name) {
-      errors.name = 'Name is required';
+      errors.name = VALIDATION_CRITERIA.name.required;
     } else if (formData.name.length < 2) {
-      errors.name = 'Name must be at least 2 characters long';
+      errors.name = VALIDATION_CRITERIA.name.minLength;
     } else if (formData.name.length > 50) {
-      errors.name = 'Name must not exceed 50 characters';
+      errors.name = VALIDATION_CRITERIA.name.maxLength;
     }
 
     // Validate Email
     if (!formData.email) {
-      errors.email = 'Email is required';
+      errors.email = VALIDATION_CRITERIA.email.required;
     } else if (!this.emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = VALIDATION_CRITERIA.email.invalid;
     }
 
     // Validate Date
     if (!formData.date) {
-      errors.date = 'Date is required';
+      errors.date = VALIDATION_CRITERIA.date.required;
     } else {
       const selectedDate = new Date(formData.date);
       const today = new Date();
       if (selectedDate > today) {
-        errors.date = 'Invoice date cannot be in the future';
+        errors.date = VALIDATION_CRITERIA.date.future;
       }
     }
 
     // Validate Address
     if (!formData.address) {
-      errors.address = 'Address is required';
+      errors.address = VALIDATION_CRITERIA.address.required;
     } else if (formData.address.length < 5) {
-      errors.address = 'Address must be at least 5 characters long';
+      errors.address = VALIDATION_CRITERIA.address.minLength;
     } else if (formData.address.length > 200) {
-      errors.address = 'Address must not exceed 200 characters';
+      errors.address = VALIDATION_CRITERIA.address.maxLength;
     }
 
     return {
@@ -65,29 +64,29 @@ class ValidationUtils {
 
     // Validate Product Name
     if (!product.name) {
-      errors.name = 'Product name is required';
+      errors.name = VALIDATION_CRITERIA.product.name.required;
     } else if (product.name.length < 2) {
-      errors.name = 'Product name must be at least 2 characters long';
+      errors.name = VALIDATION_CRITERIA.product.name.minLength;
     } else if (product.name.length > 50) {
-      errors.name = 'Product name must not exceed 50 characters';
+      errors.name = VALIDATION_CRITERIA.product.name.maxLength;
     }
 
     // Validate Rate
     if (!product.rate && product.rate !== 0) {
-      errors.rate = 'Rate is required';
+      errors.rate = VALIDATION_CRITERIA.product.rate.required;
     } else if (isNaN(product.rate)) {
-      errors.rate = 'Rate must be a number';
+      errors.rate = VALIDATION_CRITERIA.product.rate.invalid;
     } else if (product.rate < 0) {
-      errors.rate = 'Rate cannot be negative';
+      errors.rate = VALIDATION_CRITERIA.product.rate.negative;
     }
 
     // Validate Quantity
     if (!product.quantity && product.quantity !== 0) {
-      errors.quantity = 'Quantity is required';
+      errors.quantity = VALIDATION_CRITERIA.product.quantity.required;
     } else if (!Number.isInteger(product.quantity)) {
-      errors.quantity = 'Quantity must be a whole number';
+      errors.quantity = VALIDATION_CRITERIA.product.quantity.integer;
     } else if (product.quantity < 1) {
-      errors.quantity = 'Quantity must be at least 1';
+      errors.quantity = VALIDATION_CRITERIA.product.quantity.minimum;
     }
     return {
       isValid: Object.keys(errors).length === 0,
@@ -104,14 +103,14 @@ class ValidationUtils {
     if (!Array.isArray(products)) {
       return {
         isValid: false,
-        errors: { general: 'Invalid product data format' },
+        errors: { general: VALIDATION_CRITERIA.product.general.invalidFormat },
       };
     }
 
     if (products.length === 0) {
       return {
         isValid: false,
-        errors: { general: 'At least one product is required' },
+        errors: { general: VALIDATION_CRITERIA.product.general.required },
       };
     }
 

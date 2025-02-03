@@ -1,109 +1,98 @@
 {
   "invoices": [
     {
-      "id": "INV-25-01-6999",
-      "name": "Easin Arafat",
-      "email": "easinarafat@gmail.com",
-      "phoneNum": "(+1) 123456",
-      "date": "2025-01-07",
-      "address": "123 Bellinham",
-      "status": "Cancel",
-      "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-1.svg",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-4937",
-      "name": "cccc",
-      "email": "22222@gmail.com",
-      "phoneNum": "(+1) 222 222 222",
-      "date": "2025-01-01",
-      "address": "123 ddddddd",
-      "status": "Pending",
-      "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-6.svg",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-01-8870",
-      "name": "aaaaaaaa",
-      "email": "ssss@gmail.com",
-      "phoneNum": "111111112222",
-      "date": "2024-12-30",
-      "address": "123 rtsss",
-      "status": "Pending",
-      "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-7.svg",
-      "favorite": false
-    },
-    {
-      "id": "INV-25-02-0526",
-      "name": "Alec C",
-      "email": "alecc@gmail.com",
-      "phoneNum": "123-456-789",
-      "date": "2025-01-29",
-      "address": "123 test ave",
+      "id": "INV-1738597788010-f128b899",
+      "name": "Alex V",
+      "email": "alexv@gmail.com",
+      "phoneNum": "(+84) 123 456 789",
+      "date": "2025-01-28",
+      "address": "123 ngo quyen",
       "status": "Complete",
-      "avatarSrc": "http://127.0.0.1:5500/src/assets/images/avatars/avatar-2.svg",
+      "avatarSrc": "./assets/images/recipient-image.png",
+      "favorite": true
+    },
+    {
+      "id": "INV-1738597944664-b5ff6af2",
+      "name": "Ben T",
+      "email": "bent@gmail.com",
+      "phoneNum": "(+61) 222 333 444",
+      "date": "2024-12-29",
+      "address": "123 nguyen van linh",
+      "status": "Cancel",
+      "avatarSrc": "http://127.0.0.1:5500/javascript-practice/src/assets/images/avatars/avatar-3.svg",
+      "favorite": true
+    },
+    {
+      "id": "INV-1738597999704-f79f37b4",
+      "name": "Arthur",
+      "email": "arthur@hotmail.com",
+      "phoneNum": "(+1) 456 789 258",
+      "date": "2025-01-27",
+      "address": "123 New York",
+      "status": "Complete",
+      "avatarSrc": "./assets/images/recipient-image.png",
       "favorite": false
     },
     {
-      "id": "INV-25-02-3064",
-      "name": "Alex",
-      "email": "alex123@gmail.com",
-      "phoneNum": "(+84) 1234567889",
+      "id": "INV-1738598070922-214a6d70",
+      "name": "Adele",
+      "email": "adele@yahoo.com",
+      "phoneNum": "(+1) 444 777 333",
       "date": "2025-01-29",
-      "address": "12 test",
-      "status": "Pending",
+      "address": "123 Las Vegas",
+      "status": "Complete",
       "avatarSrc": "./assets/images/recipient-image.png",
       "favorite": false
     }
   ],
   "products": [
     {
-      "id": "PRD-AA7MV41M",
-      "name": "ccc",
-      "rate": 222,
-      "quantity": 22,
-      "amount": 4884,
-      "invoiceId": "INV-25-01-8870"
-    },
-    {
-      "id": "PRD-UTM81N6L",
-      "name": "Ipad",
-      "rate": 1000,
-      "quantity": 2,
-      "amount": 2000,
-      "invoiceId": "INV-25-02-0526"
-    },
-    {
-      "id": "PRD-YS9SMGEO",
-      "name": "tv",
-      "rate": 500,
-      "quantity": 2,
-      "amount": 1000,
-      "invoiceId": "INV-25-01-6999"
-    },
-    {
-      "id": "PRD-HPEQEVKA",
-      "name": "clothes",
+      "id": "PRD-1738597831801-cf29a17d",
+      "name": "samsung S20",
       "rate": 200,
       "quantity": 2,
       "amount": 400,
-      "invoiceId": "INV-25-01-6999"
+      "invoiceId": "INV-1738597788010-f128b899"
     },
     {
-      "id": "PRD-NAIPLF6P",
-      "name": "sony",
-      "rate": 1100,
-      "quantity": 11,
-      "amount": 12100,
-      "invoiceId": "INV-25-01-4937"
+      "id": "PRD-1738598067471-2503e45e",
+      "name": "Xbox",
+      "rate": 400,
+      "quantity": 2,
+      "amount": 800,
+      "invoiceId": "INV-1738597999704-f79f37b4"
     },
     {
-      "id": "PRD-5VV41AD3",
-      "name": "ipad",
-      "rate": 11,
-      "quantity": 22,
-      "amount": 242,
-      "invoiceId": "INV-25-02-3064"
+      "id": "PRD-1738598067471-54587d38",
+      "name": "PS5",
+      "rate": 1000,
+      "quantity": 2,
+      "amount": 2000,
+      "invoiceId": "INV-1738597999704-f79f37b4"
+    },
+    {
+      "id": "PRD-1738598141913-826425b2",
+      "name": "grocery",
+      "rate": 200,
+      "quantity": 2,
+      "amount": 400,
+      "invoiceId": "INV-1738598070922-214a6d70"
+    },
+    {
+      "id": "PRD-1738598141913-8f3d9649",
+      "name": "vacation",
+      "rate": 2000,
+      "quantity": 3,
+      "amount": 6000,
+      "invoiceId": "INV-1738598070922-214a6d70"
+    },
+    {
+      "id": "PRD-1738602098492-e0ad52e2",
+      "name": "Sony",
+      "rate": 2000,
+      "quantity": 2,
+      "amount": 4000,
+      "invoiceId": "INV-1738597944664-b5ff6af2"
     }
   ]
 }

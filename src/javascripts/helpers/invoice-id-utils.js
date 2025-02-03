@@ -1,17 +1,11 @@
+import { v4 as uuidv4 } from 'https://unpkg.com/uuid@9.0.1/dist/esm-browser/index.js';
 // Create a utility function to generate invoice IDs
 const generateInvoiceId = () => {
-  // Get current date components
   const now = new Date();
-  const year = now.getFullYear().toString().slice(-2); // Last 2 digits of year
-  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Month (1-12)
+  const timestamp = now.getTime();
+  const uniqueId = uuidv4().split('-')[0];
 
-  // Generate a random 4-digit number
-  const randomNum = Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, '0');
-
-  // Combine components: INV-YY-MM-XXXX
-  return `INV-${year}-${month}-${randomNum}`;
+  return `INV-${timestamp}-${uniqueId}`;
 };
 
 // Function to update placeholder with new ID
@@ -24,13 +18,9 @@ const updateInvoiceIdPlaceholder = () => {
 
 const generateProductId = () => {
   // Generate a random string of 8 characters
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const idLength = 8;
-  let id = 'PRD-';
-  for (let i = 0; i < idLength; i++) {
-    id += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return id;
+  const timestamp = Date.now();
+  const uniqueId = uuidv4().split('-')[0];
+  return `PRD-${timestamp}-${uniqueId}`;
 };
 
 export { generateInvoiceId, updateInvoiceIdPlaceholder, generateProductId };

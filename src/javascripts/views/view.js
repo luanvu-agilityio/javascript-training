@@ -250,8 +250,19 @@ class InvoiceView {
       favoriteIcon.classList.toggle('favorite-icon-inactive', isActive);
       favoriteIcon.classList.toggle('favorite-icon-active', !isActive);
 
-      onFavoriteToggle(invoiceId, !isActive);
+      if (onFavoriteToggle) {
+        onFavoriteToggle(invoiceId, !isActive);
+      }
     });
+  }
+
+  /**
+   * Renders only favorite invoices in the invoice list
+   * @param {Array[Object]} invoices - Full list of invoices to filter
+   */
+  renderFavoriteInvoices(invoices) {
+    const favoriteInvoices = invoices.filter((invoice) => invoice.favorite);
+    this.renderInvoiceList(favoriteInvoices);
   }
 
   setupPrintAndDownLoadPreview() {

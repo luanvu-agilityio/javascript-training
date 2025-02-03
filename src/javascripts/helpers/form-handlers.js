@@ -1,7 +1,7 @@
-import NotificationUtils from '../helpers/notification-utils.js';
-import ValidationUtils from '../helpers/validation-utils.js';
-import { generateInvoiceId } from '../helpers/invoice-id-utils.js';
-import UserErrorMessage from '../helpers/user-error-message.js';
+import NotificationUtils from './notification-utils.js';
+import ValidationUtils from './validation-utils.js';
+import { generateInvoiceId } from './invoice-id-utils.js';
+import UserErrorMessage from './user-error-message.js';
 import Templates from '../templates/templates.js';
 import InvoiceView from '../views/view.js';
 import avatarImages from '../constants/avatar-image.js';

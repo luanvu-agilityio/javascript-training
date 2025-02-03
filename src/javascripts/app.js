@@ -1,6 +1,6 @@
-import Invoice from './model/model.js';
+import Invoice from './models/model.js';
 import InvoiceView from './views/view.js';
-import InvoiceController from './controllers/invoice.js';
+import InvoiceController from './controllers/invoice-controller.js';
 class App {
   init() {
     this.invoice = new Invoice();

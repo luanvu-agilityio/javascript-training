@@ -2,10 +2,10 @@
   "name": "admin-dashboard",
   "version": "1.0.0",
   "source": "src/index.html",
-  "script": {
+  "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "json-server": "json-server --watch ../db.json"
+    "json-server": "json-server --watch db.json"
   },
   "devDependencies": {
     "eslint": "^8.2.0",

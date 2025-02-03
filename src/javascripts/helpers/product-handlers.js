@@ -1,6 +1,6 @@
 import Templates from '../templates/templates.js';
-import UserErrorMessage from '../helpers/user-error-message.js';
-import { generateProductId } from '../helpers/invoice-id-utils.js';
+import UserErrorMessage from './user-error-message.js';
+import { generateProductId } from './invoice-id-utils.js';
 
 /**
  * Sets up event listeners for product list actions.
