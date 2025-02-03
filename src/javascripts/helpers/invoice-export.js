@@ -7,7 +7,6 @@ export default class InvoiceExport {
    */
   static async exportToExcel(selectedInvoices) {
     try {
-      // Load XLSX from CDN
       await this.loadXLSX();
     } catch (err) {
       console.error('Failed to load XLSX:', err);
@@ -60,10 +59,36 @@ export default class InvoiceExport {
 
     // Create workbook
     const workbook = XLSX.utils.book_new();
-    const invoiceSheet = XLSX.utils.json_to_sheet(exportData);
-    // Add title to invoice sheet
-    invoiceSheet['A1'] = { v: 'Invoice Summary', t: 's' };
-    invoiceSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 11 } }];
+    const invoiceSheet = XLSX.utils.json_to_sheet(exportData, {
+      origin: 'A2',
+    });
+
+    // Add headers to invoice sheet
+    const invoiceHeaders = [
+      ['Invoice Summary'],
+      [
+        'Invoice ID',
+        'Customer Name',
+        'Email',
+        'Phone Number',
+        'Invoice Date',
+        'Address',
+        'Status',
+        'Total Products',
+        'Subtotal',
+        'Discount Percentage',
+        'Discount Amount',
+        'Total After Discount',
+      ],
+    ];
+
+    XLSX.utils.sheet_add_aoa(invoiceSheet, invoiceHeaders, { origin: 'A1' });
+
+    // Style headers
+    invoiceSheet['A1'].s = {
+      font: { bold: true, sz: 14 },
+      alignment: { horizontal: 'center' },
+    };
 
     // Define column widths
     invoiceSheet['!cols'] = [
@@ -81,11 +106,24 @@ export default class InvoiceExport {
       { wch: 15 },
     ];
 
-    const productSheet = XLSX.utils.json_to_sheet(productData);
+    // product sheet
+    const productSheet = XLSX.utils.json_to_sheet(productData, {
+      origin: 'A2',
+    });
 
-    // Add title to product sheet
-    productSheet['A1'] = { v: 'Product Details', t: 's' };
-    productSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
+    // Add headers to product sheet
+    const productHeaders = [
+      ['Product Details'],
+      ['Invoice ID', 'Customer Name', 'Product Name', 'Rate', 'Quantity', 'Total Product Amount'],
+    ];
+
+    XLSX.utils.sheet_add_aoa(productSheet, productHeaders, { origin: 'A1' });
+
+    // Style headers for product sheet
+    productSheet['A1'].s = {
+      font: { bold: true, sz: 14 },
+      alignment: { horizontal: 'center' },
+    };
 
     // Define column widths for product sheet
     productSheet['!cols'] = [
@@ -99,6 +137,10 @@ export default class InvoiceExport {
     // Add sheets to workbook
     XLSX.utils.book_append_sheet(workbook, invoiceSheet, 'Invoices');
     XLSX.utils.book_append_sheet(workbook, productSheet, 'Products');
+
+    // Set merge ranges for titles
+    invoiceSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 11 } }];
+    productSheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
 
     // Generate file name
     const fileName = `Invoice_Export_${new Date().toISOString().split('T')[0]}.xlsx`;
