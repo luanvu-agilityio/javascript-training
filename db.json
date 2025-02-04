@@ -9,18 +9,18 @@
       "address": "123 ngo quyen",
       "status": "Complete",
       "avatarSrc": "./assets/images/recipient-image.png",
-      "favorite": true
+      "favorite": false
     },
     {
       "id": "INV-1738597944664-b5ff6af2",
       "name": "Ben T",
       "email": "bent@gmail.com",
       "phoneNum": "(+61) 222 333 444",
-      "date": "2024-12-29",
+      "date": "2025-01-31",
       "address": "123 nguyen van linh",
       "status": "Cancel",
-      "avatarSrc": "http://127.0.0.1:5500/javascript-practice/src/assets/images/avatars/avatar-3.svg",
-      "favorite": true
+      "avatarSrc": "./assets/images/avatars/avatar-3.svg",
+      "favorite": false
     },
     {
       "id": "INV-1738597999704-f79f37b4",
@@ -55,6 +55,14 @@
       "invoiceId": "INV-1738597788010-f128b899"
     },
     {
+      "id": "PRD-1738597994634-417bc56b",
+      "name": "Sony",
+      "rate": 2000,
+      "quantity": 2,
+      "amount": 4000,
+      "invoiceId": "INV-1738597944664-b5ff6af2"
+    },
+    {
       "id": "PRD-1738598067471-2503e45e",
       "name": "Xbox",
       "rate": 400,
@@ -85,14 +93,6 @@
       "quantity": 3,
       "amount": 6000,
       "invoiceId": "INV-1738598070922-214a6d70"
-    },
-    {
-      "id": "PRD-1738602098492-e0ad52e2",
-      "name": "Sony",
-      "rate": 2000,
-      "quantity": 2,
-      "amount": 4000,
-      "invoiceId": "INV-1738597944664-b5ff6af2"
     }
   ]
 }

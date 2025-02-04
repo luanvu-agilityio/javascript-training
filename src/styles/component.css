@@ -1023,17 +1023,17 @@
 }
 
 .country-flag {
-  font-size: 1.25rem;
+  font-size: var(--font-size-13);
 }
 
 .country-code {
   color: var(--gray-color);
-  font-size: 0.875rem;
+  font-size: var(--font-size-14);
 }
 
 .country-name {
   color: var(--black-color);
-  font-size: 0.875rem;
+  font-size: var(--font-size-13);
 }
 
 .dropdown-arrow {
